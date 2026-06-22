@@ -646,3 +646,37 @@ body {
     }
 }
 
+/* Explainable AI (XAI) Styling */
+.xai-section {
+    border-color: var(--light-border) !important;
+}
+
+.xai-chart-container {
+    background-color: #ffffff;
+    border: 1px solid var(--light-border);
+    border-radius: 12px;
+    padding: 10px;
+    box-shadow: var(--shadow-sm);
+}
+
+.badge-xai-contrib-pos {
+    background-color: rgba(16, 185, 129, 0.1);
+    color: #065f46;
+    border: 1px solid rgba(16, 185, 129, 0.2);
+    font-size: 0.72rem;
+    font-weight: 600;
+    padding: 0.25rem 0.5rem;
+    border-radius: 20px;
+}
+
+.badge-xai-contrib-neg {
+    background-color: rgba(100, 116, 139, 0.1);
+    color: #334155;
+    border: 1px solid rgba(100, 116, 139, 0.2);
+    font-size: 0.72rem;
+    font-weight: 500;
+    padding: 0.25rem 0.5rem;
+    border-radius: 20px;
+}
+
+

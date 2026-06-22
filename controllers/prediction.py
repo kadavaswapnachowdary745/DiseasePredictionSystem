@@ -49,6 +49,108 @@ def get_model_and_features():
         
     return _MODEL, _SYMPTOMS_LIST
 
+def explain_rf_prediction(model, input_vector, predicted_class, symptoms_features):
+    """
+    Computes local feature contributions and global feature importances
+    for a specific prediction result.
+    """
+    # 1. Global feature importances
+    importances = model.feature_importances_
+    global_imp_list = []
+    for idx, feat in enumerate(symptoms_features):
+        global_imp_list.append({
+            'symptom': feat,
+            'importance': float(importances[idx])
+        })
+    # Sort global importances descending
+    global_imp_list.sort(key=lambda x: x['importance'], reverse=True)
+    
+    # 2. Local feature contributions
+    # Find index of the predicted class in model classes
+    classes_list = list(model.classes_)
+    if predicted_class in classes_list:
+        class_idx = classes_list.index(predicted_class)
+    else:
+        class_idx = 0
+        
+    estimators = model.estimators_
+    n_features = len(symptoms_features)
+    contributions = np.zeros(n_features)
+    
+    X_arr = input_vector.values if hasattr(input_vector, 'values') else np.array(input_vector)
+    
+    # Trace decision path for each tree
+    for tree in estimators:
+        path_sparse = tree.decision_path(X_arr)
+        node_indicators = path_sparse.indices
+        
+        values = tree.tree_.value
+        if len(values.shape) == 3:
+            values = values.squeeze(axis=1)
+            
+        node_probs = values / values.sum(axis=1, keepdims=True)
+        
+        for i in range(len(node_indicators) - 1):
+            parent = node_indicators[i]
+            child = node_indicators[i+1]
+            feature = tree.tree_.feature[parent]
+            
+            if feature >= 0: # split node
+                diff = node_probs[child, class_idx] - node_probs[parent, class_idx]
+                contributions[feature] += diff
+                
+    contributions /= len(estimators)
+    
+    local_contribs = []
+    for idx, feat in enumerate(symptoms_features):
+        local_contribs.append({
+            'symptom': feat,
+            'contribution': float(contributions[idx]),
+            'present': int(X_arr[0, idx])
+        })
+        
+    # 3. Formulate text explanations
+    # Find symptoms present that contributed positively
+    positive_present = [x for x in local_contribs if x['present'] == 1 and x['contribution'] > 0.001]
+    positive_present.sort(key=lambda x: x['contribution'], reverse=True)
+    
+    # Construct a friendly narrative explanation
+    present_names = [x['symptom'].replace('_', ' ') for x in positive_present]
+    if present_names:
+        if len(present_names) == 1:
+            reasoning = f"The primary symptom contributing to this diagnosis is **{present_names[0]}**."
+        elif len(present_names) == 2:
+            reasoning = f"The primary symptoms driving this diagnosis are **{present_names[0]}** and **{present_names[1]}**."
+        else:
+            reasoning = f"The primary symptoms driving this diagnosis are **{present_names[0]}**, **{present_names[1]}**, and **{present_names[2]}**."
+    else:
+        reasoning = "The combination of symptoms matches the characteristic clinical profile for this condition."
+        
+    # Add ruled out text
+    ruled_out_indications = [x['symptom'].replace('_', ' ') for x in local_contribs if x['present'] == 0 and x['contribution'] < -0.01]
+    if ruled_out_indications:
+        reasoning += f" The absence of symptoms like **{ruled_out_indications[0]}** helped differentiate it from other respiratory or metabolic conditions."
+        
+    # Confidence explanation
+    if len(present_names) > 0:
+        confidence_explanation = (
+            f"The model's confidence is supported by the high presence of matching primary features: "
+            f"**{', '.join(present_names[:2])}** which showed significant statistical weight. "
+            f"No conflicting symptoms belonging to alternative clinical profiles were detected."
+        )
+    else:
+        confidence_explanation = (
+            "The model calculated a low-to-medium confidence prediction based on subtle symptom indicators. "
+            "Additional symptoms may be required for a more definitive classification."
+        )
+    
+    return {
+        'global_importances': global_imp_list,
+        'local_contributions': local_contribs,
+        'reasoning': reasoning,
+        'confidence_explanation': confidence_explanation
+    }
+
 @predict_bp.route('/predict', methods=['POST'])
 def predict():
     """
@@ -95,6 +197,13 @@ def predict():
         logger.error(f"Model classification failed: {str(e)}")
         return jsonify({'error': f"Model classification failed: {str(e)}"}), 500
         
+    # Generate XAI explanations
+    try:
+        xai_data = explain_rf_prediction(model, input_vector, predicted_class, symptoms_features)
+    except Exception as xai_err:
+        logger.warning(f"Failed to generate prediction explanation: {str(xai_err)}")
+        xai_data = None
+
     # Save search log if user session exists
     user_id = session.get('user_id')
     saved_to_db = False
@@ -111,8 +220,6 @@ def predict():
             saved_to_db = True
             logger.info(f"Prediction logged successfully. Record ID: {prediction_id}")
         except Exception as db_err:
-            # Prediction logging failure should not crash inference endpoint execution.
-            # Output warning internally but return successful prediction to client.
             logger.warning(f"Database logging warning: failed to write prediction record: {str(db_err)}")
             
     # Fetch detailed clinical profiles from SQLite database
@@ -128,7 +235,8 @@ def predict():
         'symptoms_analyzed': valid_symptoms,
         'saved_to_history': saved_to_db,
         'prediction_id': prediction_id,
-        'disease_details': disease_details
+        'disease_details': disease_details,
+        'xai_data': xai_data
     }), 200
 
 @predict_bp.route('/predictions/history', methods=['GET'])

@@ -108,6 +108,7 @@ function initDashboardPage() {
     let allSymptoms = [];
     let cachedHistory = [];
     let myChartInstance = null;
+    let xaiChartInstance = null;
     
     // UI Elements
     const sidebar = document.getElementById('sidebar');
@@ -473,6 +474,47 @@ function initDashboardPage() {
             } else {
                 downloadPdfBtn.classList.add('d-none');
             }
+        }
+        
+        // Populate XAI components
+        const xaiData = data.xai_data;
+        if (xaiData) {
+            document.getElementById('xai-reasoning').innerHTML = formatMarkdownText(xaiData.reasoning);
+            document.getElementById('xai-confidence-exp').innerHTML = formatMarkdownText(xaiData.confidence_explanation);
+
+            const badgeContainer = document.getElementById('xai-contributing-symptoms');
+            badgeContainer.innerHTML = '';
+            
+            const localContribs = xaiData.local_contributions;
+            const presentPositive = localContribs.filter(c => c.present === 1 && c.contribution > 0.001);
+            const absentRuleOut = localContribs.filter(c => c.present === 0 && c.contribution < -0.005);
+            
+            presentPositive.sort((a, b) => b.contribution - a.contribution);
+            absentRuleOut.sort((a, b) => a.contribution - b.contribution);
+            
+            presentPositive.forEach(item => {
+                const badge = document.createElement('span');
+                badge.className = 'badge-xai-contrib-pos m-1';
+                badge.innerHTML = `<i class="bi bi-plus-circle-fill me-1 text-success"></i>${capitalizeWords(item.symptom.replace(/_/g, ' '))} (+${(item.contribution * 100).toFixed(1)}%)`;
+                badgeContainer.appendChild(badge);
+            });
+            
+            absentRuleOut.slice(0, 3).forEach(item => {
+                const badge = document.createElement('span');
+                badge.className = 'badge-xai-contrib-neg m-1';
+                badge.innerHTML = `<i class="bi bi-dash-circle-fill me-1 text-secondary"></i>No ${capitalizeWords(item.symptom.replace(/_/g, ' '))} (${(item.contribution * 100).toFixed(1)}%)`;
+                badgeContainer.appendChild(badge);
+            });
+
+            if (presentPositive.length === 0 && absentRuleOut.length === 0) {
+                badgeContainer.innerHTML = `<span class="text-muted small">No significant symptom correlations mapped.</span>`;
+            }
+
+            renderSymptomImportanceChart(localContribs);
+        } else {
+            document.getElementById('xai-reasoning').textContent = 'Explanation not available.';
+            document.getElementById('xai-confidence-exp').textContent = '';
+            document.getElementById('xai-contributing-symptoms').innerHTML = '';
         }
         
         // Update chatbot quick replies with predicted disease context
@@ -899,6 +941,100 @@ function initDashboardPage() {
                 chatUnreadBadge.classList.remove('d-none');
             }
         }
+    }
+
+    /**
+     * Renders a horizontal bar chart displaying local symptom contributions to the prediction.
+     */
+    function renderSymptomImportanceChart(localContribs) {
+        const ctx = document.getElementById('xai-chart');
+        if (!ctx) return;
+
+        // Filter and display selected symptoms plus other high-influence symptoms
+        const presentContribs = localContribs.filter(c => c.present === 1);
+        const absentContribs = localContribs.filter(c => c.present === 0 && Math.abs(c.contribution) > 0.005);
+        
+        absentContribs.sort((a, b) => Math.abs(b.contribution) - Math.abs(a.contribution));
+        
+        const combined = [...presentContribs, ...absentContribs.slice(0, 4)];
+        combined.sort((a, b) => b.contribution - a.contribution);
+
+        const labels = combined.map(c => {
+            const name = capitalizeWords(c.symptom.replace(/_/g, ' '));
+            return c.present === 1 ? name : `Absent: ${name}`;
+        });
+        const values = combined.map(c => c.contribution * 100);
+        
+        const backgroundColors = combined.map(c => {
+            return c.contribution > 0 ? 'rgba(15, 118, 110, 0.85)' : 'rgba(100, 116, 139, 0.7)';
+        });
+        
+        const borderColors = combined.map(c => {
+            return c.contribution > 0 ? 'rgb(15, 118, 110)' : 'rgb(100, 116, 139)';
+        });
+
+        if (xaiChartInstance) {
+            xaiChartInstance.destroy();
+        }
+
+        xaiChartInstance = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: labels,
+                datasets: [{
+                    label: 'Contribution %',
+                    data: values,
+                    backgroundColor: backgroundColors,
+                    borderColor: borderColors,
+                    borderWidth: 1,
+                    borderRadius: 4,
+                    barThickness: 14
+                }]
+            },
+            options: {
+                indexAxis: 'y',
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: { display: false },
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                return `Contribution: ${context.parsed.x.toFixed(1)}%`;
+                            }
+                        },
+                        backgroundColor: '#1e293b',
+                        titleFont: { family: 'Outfit', size: 11 },
+                        bodyFont: { family: 'Outfit', size: 10 }
+                    }
+                },
+                scales: {
+                    x: {
+                        grid: { color: '#f8fafc' },
+                        ticks: {
+                            font: { family: 'Outfit', size: 9 },
+                            callback: function(value) {
+                                return value + '%';
+                            }
+                        }
+                    },
+                    y: {
+                        grid: { display: false },
+                        ticks: {
+                            font: { family: 'Outfit', size: 9 }
+                        }
+                    }
+                }
+            }
+        });
+    }
+
+    /**
+     * Formats basic markdown bold asterisks.
+     */
+    function formatMarkdownText(text) {
+        if (!text) return '';
+        return text.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
     }
 }
 

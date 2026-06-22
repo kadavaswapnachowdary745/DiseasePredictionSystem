@@ -272,6 +272,37 @@
                                     </ul>
                                 </div>
                                 
+                                <!-- Explainable AI (XAI) Section -->
+                                <div class="xai-section mt-4 pt-4 border-top">
+                                    <h6 class="fw-bold text-dark mb-3"><i class="bi bi-info-circle-fill text-teal me-2"></i>Explainable AI (XAI) Analysis</h6>
+                                    
+                                    <!-- Symptom Importance/Contribution Chart -->
+                                    <div class="mb-4">
+                                        <span class="text-muted small d-block mb-2">Symptom Attribution Weights</span>
+                                        <div class="xai-chart-container" style="position: relative; height: 180px; width: 100%;">
+                                            <canvas id="xai-chart"></canvas>
+                                        </div>
+                                    </div>
+
+                                    <!-- User-friendly Explanation Panels -->
+                                    <div class="xai-explanations small">
+                                        <div class="mb-3">
+                                            <span class="text-muted fw-bold d-block mb-1">Key Contributing Symptoms</span>
+                                            <div id="xai-contributing-symptoms" class="d-flex flex-wrap gap-1">
+                                                <!-- Dynamic badges go here -->
+                                            </div>
+                                        </div>
+                                        <div class="mb-3">
+                                            <span class="text-muted fw-bold d-block mb-1">Clinical Reasoning Path</span>
+                                            <p class="text-muted mb-0 bg-teal bg-opacity-5 p-2 rounded-2 border-start border-3 border-teal" id="xai-reasoning" style="font-size: 0.82rem; line-height: 1.4;"></p>
+                                        </div>
+                                        <div class="mb-3">
+                                            <span class="text-muted fw-bold d-block mb-1">Confidence Attribution</span>
+                                            <p class="text-muted mb-0" id="xai-confidence-exp" style="font-size: 0.82rem; line-height: 1.4;"></p>
+                                        </div>
+                                    </div>
+                                </div>
+                                
                                 <!-- PDF Download button link -->
                                 <a href="#" id="download-pdf-btn" class="btn btn-outline-teal w-100 d-none mt-3" target="_blank">
                                     <i class="bi bi-file-earmark-pdf-fill me-2"></i>Download PDF Report

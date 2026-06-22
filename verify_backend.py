@@ -80,6 +80,16 @@ class TestBackendAPI(unittest.TestCase):
         self.assertIsInstance(details['precautions'], list)
         print(f"Verified DB-sourced details in API: Description={details['description'][:40]}..., Doctor={details['recommended_doctor']}")
 
+        # Verify Explainable AI (XAI) data presence and structure
+        self.assertIn('xai_data', data_predict)
+        xai = data_predict.get('xai_data')
+        self.assertIsNotNone(xai)
+        self.assertIn('reasoning', xai)
+        self.assertIn('confidence_explanation', xai)
+        self.assertIsInstance(xai['global_importances'], list)
+        self.assertIsInstance(xai['local_contributions'], list)
+        print("Verified Explainable AI (XAI) data structure in API.")
+
         # Verify PDF report generation (GET /api/predictions/<id>/pdf)
         prediction_id = data_predict.get('prediction_id')
         self.assertIsNotNone(prediction_id)
