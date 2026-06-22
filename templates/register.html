@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register - Disease Prediction System</title>
+    <!-- Bootstrap 5 CSS CDN -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap Icons CDN -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+    <!-- Custom Style Sheet -->
+    <link href="/static/css/style.css" rel="stylesheet">
+</head>
+<body class="d-flex align-items-center min-vh-100">
+
+    <div class="container auth-container">
+        <div class="row w-100 justify-content-center">
+            <div class="col-md-10 col-lg-8 glass-card p-0 overflow-hidden shadow-lg d-flex flex-column flex-md-row">
+                
+                <!-- Left Branding Panel -->
+                <div class="col-md-6 bg-teal text-white p-5 d-flex flex-column justify-content-center align-items-start" style="background: linear-gradient(135deg, var(--primary-color), var(--primary-light));">
+                    <div class="auth-logo text-white mb-4">
+                        <i class="bi bi-heart-pulse-fill"></i>
+                        <span class="fw-bold">PrediHealth</span>
+                    </div>
+                    <h3 class="fw-bold mb-3">Join Us Today</h3>
+                    <p class="text-white-50 mb-4">Create an account to gain full access to prediction forms, clinical symptom analytics, and save your historical results over time.</p>
+                    <div class="d-flex align-items-center gap-3 bg-white bg-opacity-10 p-3 rounded-3 w-100 mb-2">
+                        <i class="bi bi-shield-lock-fill fs-3 text-emerald"></i>
+                        <div class="small">
+                            <strong class="d-block text-white">Secure Data Handling</strong>
+                            Password hashing and secure session controls.
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right Register Form Panel -->
+                <div class="col-md-6 p-5 bg-white d-flex flex-column justify-content-center">
+                    <div class="mb-4">
+                        <h4 class="fw-bold text-dark mb-1">Create Account</h4>
+                        <p class="text-muted small">Sign up to analyze and track your health conditions.</p>
+                    </div>
+
+                    <form id="register-form">
+                        <div class="mb-3">
+                            <label for="username" class="form-label small fw-medium text-secondary">Username</label>
+                            <div class="input-group">
+                                <span class="input-group-text bg-light border-end-0"><i class="bi bi-person text-muted"></i></span>
+                                <input type="text" class="form-control bg-light border-start-0 ps-0" id="username" placeholder="Username (min 3 chars)" required>
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="email" class="form-label small fw-medium text-secondary">Email Address</label>
+                            <div class="input-group">
+                                <span class="input-group-text bg-light border-end-0"><i class="bi bi-envelope text-muted"></i></span>
+                                <input type="email" class="form-control bg-light border-start-0 ps-0" id="email" placeholder="name@example.com" required>
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="password" class="form-label small fw-medium text-secondary">Password</label>
+                            <div class="input-group">
+                                <span class="input-group-text bg-light border-end-0"><i class="bi bi-lock text-muted"></i></span>
+                                <input type="password" class="form-control bg-light border-start-0 ps-0" id="password" placeholder="Min 6 characters" required>
+                            </div>
+                        </div>
+
+                        <div class="mb-4">
+                            <label for="confirmPassword" class="form-label small fw-medium text-secondary">Confirm Password</label>
+                            <div class="input-group">
+                                <span class="input-group-text bg-light border-end-0"><i class="bi bi-check-lg text-muted"></i></span>
+                                <input type="password" class="form-control bg-light border-start-0 ps-0" id="confirmPassword" placeholder="Repeat password" required>
+                            </div>
+                        </div>
+
+                        <button type="submit" class="btn btn-primary w-100 py-2.5 mb-3">
+                            <i class="bi bi-person-plus me-2"></i>Register
+                        </button>
+                    </form>
+
+                    <div class="text-center mt-2">
+                        <p class="small text-muted mb-0">Already have an account? <a href="/login" class="text-teal fw-semibold text-decoration-none">Sign in here</a></p>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap Bundle JS CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- App Client Script -->
+    <script src="/static/js/app.js"></script>
+</body>
+</html>

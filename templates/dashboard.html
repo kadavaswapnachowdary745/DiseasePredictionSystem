@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - Disease Prediction System</title>
+    <!-- Bootstrap 5 CSS CDN -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap Icons CDN -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+    <!-- Custom Style Sheet -->
+    <link href="/static/css/style.css" rel="stylesheet">
+    <!-- Chart.js CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+
+    <div class="dashboard-wrapper" id="dashboard-view">
+        
+        <!-- Sidebar Navigation -->
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-header d-flex align-items-center justify-content-between">
+                <div class="d-flex align-items-center gap-2 text-white fs-4 fw-bold">
+                    <i class="bi bi-heart-pulse-fill text-emerald"></i>
+                    <span>PrediHealth</span>
+                </div>
+                <button class="btn btn-sm btn-link text-white d-lg-none" id="sidebar-toggle-close">
+                    <i class="bi bi-x-lg"></i>
+                </button>
+            </div>
+            
+            <nav class="nav flex-column mt-4 w-100">
+                <a href="#" class="nav-link active" data-section="home">
+                    <i class="bi bi-grid-1x2-fill"></i>Dashboard Home
+                </a>
+                <a href="#" class="nav-link" data-section="predict">
+                    <i class="bi bi-activity"></i>New Prediction
+                </a>
+                <a href="#" class="nav-link" data-section="history">
+                    <i class="bi bi-clock-history"></i>History Logs
+                </a>
+                <a href="#" class="nav-link" data-section="profile">
+                    <i class="bi bi-person-bounding-box"></i>My Profile
+                </a>
+                
+                <hr class="mx-3 my-4 bg-white opacity-10">
+                
+                <a href="#" class="nav-link text-danger-hover" id="logout-btn">
+                    <i class="bi bi-box-arrow-left text-danger"></i>Logout
+                </a>
+            </nav>
+        </aside>
+
+        <!-- Main Workspace -->
+        <main class="main-content">
+            
+            <!-- Navbar Header -->
+            <header class="content-header d-flex align-items-center justify-content-between">
+                <div class="d-flex align-items-center gap-3">
+                    <button class="btn btn-outline-teal d-lg-none" id="sidebar-toggle">
+                        <i class="bi bi-list"></i>
+                    </button>
+                    <h5 class="mb-0 fw-bold text-dark d-none d-sm-block">Disease Prediction Portal</h5>
+                </div>
+                <div class="d-flex align-items-center gap-2">
+                    <div class="text-end d-none d-md-block">
+                        <span class="d-block small text-muted">Signed in as</span>
+                        <strong class="d-block text-dark small" id="welcome-user">User</strong>
+                    </div>
+                    <div class="bg-teal bg-opacity-10 text-teal rounded-circle d-flex align-items-center justify-content-center" style="width: 40px; height: 40px;">
+                        <i class="bi bi-person-fill fs-5"></i>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Page Sections -->
+            <div class="content-body">
+
+                <!-- 1. HOME SECTION -->
+                <section id="home-section" class="dashboard-section animate-fade">
+                    <div class="mb-4">
+                        <h3 class="fw-bold text-dark">Welcome back, Healthcare Portal</h3>
+                        <p class="text-muted">Analyze clinical symptoms using our Machine Learning system and track your diagnostic logs.</p>
+                    </div>
+
+                    <!-- Statistics Summary Row -->
+                    <div class="row g-4 mb-5">
+                        <div class="col-md-4">
+                            <div class="card metric-card glass-card h-100">
+                                <div class="card-body d-flex align-items-center justify-content-between p-4">
+                                    <div>
+                                        <h6 class="text-muted small fw-bold text-uppercase mb-2">Predictions Generated</h6>
+                                        <h2 class="fw-extrabold mb-0 text-teal" id="stat-total-runs">0</h2>
+                                    </div>
+                                    <div class="icon-box icon-teal">
+                                        <i class="bi bi-clipboard-plus"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="card metric-card glass-card h-100">
+                                <div class="card-body d-flex align-items-center justify-content-between p-4">
+                                    <div>
+                                        <h6 class="text-muted small fw-bold text-uppercase mb-2">Latest Diagnosis</h6>
+                                        <h4 class="fw-bold mb-0 text-dark text-truncate" style="max-width: 170px;" id="stat-latest-disease">None</h4>
+                                    </div>
+                                    <div class="icon-box icon-emerald">
+                                        <i class="bi bi-clipboard2-pulse"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="card metric-card glass-card h-100">
+                                <div class="card-body d-flex align-items-center justify-content-between p-4">
+                                    <div>
+                                        <h6 class="text-muted small fw-bold text-uppercase mb-2">Average Confidence</h6>
+                                        <h2 class="fw-extrabold mb-0 text-success" id="stat-avg-confidence">0%</h2>
+                                    </div>
+                                    <div class="icon-box" style="background-color: rgba(40, 167, 69, 0.1); color: #28a745;">
+                                        <i class="bi bi-graph-up-arrow"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Analytics Chart Row -->
+                    <div class="row g-4 mb-4">
+                        <div class="col-12">
+                            <div class="card border-0 shadow-sm rounded-4 p-4">
+                                <h5 class="fw-bold text-dark mb-3"><i class="bi bi-bar-chart-line-fill text-teal me-2"></i>Disease Distribution Analytics</h5>
+                                <div style="position: relative; height: 260px; width: 100%;">
+                                    <canvas id="analytics-chart"></canvas>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Informational Cards -->
+                    <div class="row g-4">
+                        <div class="col-lg-7">
+                            <div class="card border-0 shadow-sm rounded-4 p-3 h-100">
+                                <div class="card-body">
+                                    <h5 class="fw-bold text-dark mb-4 d-flex align-items-center gap-2">
+                                        <i class="bi bi-info-circle-fill text-teal"></i>About The Predictor
+                                    </h5>
+                                    <p class="text-muted">This system utilizes a **Random Forest Classifier** trained on synthetic medical data mappings. The algorithm constructs an ensemble of decision trees to determine the probability of a specific disease based on the combination of input symptoms.</p>
+                                    <p class="text-muted mb-0">Select symptoms from our checklist to generate prediction values. The system evaluates 42 symptoms to predict 20 target diseases with optimized classification matrices.</p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="col-lg-5">
+                            <div class="card border-0 shadow-sm rounded-4 p-3 h-100">
+                                <div class="card-body">
+                                    <h5 class="fw-bold text-dark mb-3 d-flex align-items-center gap-2">
+                                        <i class="bi bi-shield-exclamation text-warning"></i>Medical Disclaimer
+                                    </h5>
+                                    <div class="alert alert-warning border-0 rounded-3 mb-0 small text-dark-muted" role="alert">
+                                        <i class="bi bi-exclamation-triangle-fill me-2 text-warning"></i>
+                                        <strong>Notice:</strong> This application is a machine learning simulation intended for educational and mini-project purposes. It does not replace professional medical advice, clinical diagnosis, or physical checkups. Always consult a certified physician for health concerns.
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- 2. PREDICT SECTION -->
+                <section id="predict-section" class="dashboard-section d-none animate-fade">
+                    <div class="mb-4">
+                        <h3 class="fw-bold text-dark">Symptom Diagnosis Analyzer</h3>
+                        <p class="text-muted">Search and select all symptoms that apply, then submit for machine learning classification.</p>
+                    </div>
+
+                    <div class="row g-4">
+                        
+                        <!-- Left Panel: Symptom Checklist Form -->
+                        <div class="col-lg-8">
+                            <div class="card border-0 shadow-sm rounded-4 p-4">
+                                <form id="predict-form">
+                                    
+                                    <!-- Search Input -->
+                                    <div class="symptom-search-container">
+                                        <label for="symptom-search" class="form-label fw-bold text-secondary small">Filter Symptoms</label>
+                                        <div class="input-group">
+                                            <span class="input-group-text bg-white"><i class="bi bi-search text-muted"></i></span>
+                                            <input type="text" class="form-control border-start-0" id="symptom-search" placeholder="Type to search (e.g. fever, cough, joint pain)...">
+                                        </div>
+                                    </div>
+                                    
+                                    <!-- Symptoms list grid checkbox matrices -->
+                                    <div class="mb-4">
+                                        <div class="d-flex justify-content-between align-items-center mb-2">
+                                            <span class="text-muted small">Select matching conditions below:</span>
+                                            <button type="button" class="btn btn-sm btn-link text-teal text-decoration-none small p-0" id="clear-selected-btn">
+                                                <i class="bi bi-trash me-1"></i>Clear Selection
+                                            </button>
+                                        </div>
+                                        
+                                        <!-- Symptom checkboxes are dynamically compiled here -->
+                                        <div class="symptoms-grid" id="symptoms-grid">
+                                            <div class="text-center py-5 text-muted w-100">
+                                                <div class="spinner-border text-teal spinner-border-sm me-2" role="status"></div>
+                                                Loading symptom features...
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="d-flex align-items-center justify-content-between bg-light p-3 rounded-3 mb-4">
+                                        <div class="small">
+                                            <i class="bi bi-check2-square text-teal fs-5 me-2"></i>
+                                            <strong class="text-dark" id="selected-count">0</strong> symptoms selected
+                                        </div>
+                                        <button type="submit" class="btn btn-primary px-4 py-2">
+                                            <i class="bi bi-cpu me-2"></i>Analyze Symptoms
+                                        </button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+
+                        <!-- Right Panel: Dynamic Prediction Results -->
+                        <div class="col-lg-4">
+                            <div class="card border-0 shadow-sm rounded-4 p-4 d-none" id="prediction-result-wrapper" style="max-height: 80vh; overflow-y: auto;">
+                                <h5 class="fw-bold text-dark mb-4 text-center">Diagnostic Assessment</h5>
+                                
+                                <!-- Radial progress SVG dial -->
+                                <div class="text-center mb-4">
+                                    <div class="confidence-dial">
+                                        <svg width="140" height="140" class="confidence-ring">
+                                            <defs>
+                                                <linearGradient id="emeraldGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                                                    <stop offset="0%" stop-color="#10b981" />
+                                                    <stop offset="100%" stop-color="#0f766e" />
+                                                </linearGradient>
+                                            </defs>
+                                            <circle class="confidence-bg" cx="70" cy="70" r="60"></circle>
+                                            <circle class="confidence-bar" cx="70" cy="70" r="60"></circle>
+                                        </svg>
+                                        <div class="confidence-text" id="confidence-val">0%</div>
+                                    </div>
+                                    <small class="text-muted mt-2 d-block text-uppercase fw-bold letter-spacing-sm small">Classification Confidence</small>
+                                </div>
+                                
+                                <!-- Diagnosis Text Display -->
+                                <div class="text-center mb-3 p-3 bg-light rounded-3">
+                                    <span class="text-muted small d-block">Likely Diagnosis</span>
+                                    <h4 class="fw-extrabold text-teal mb-0" id="predicted-disease">Influenza</h4>
+                                </div>
+                                
+                                <!-- Disease Details Section -->
+                                <div class="disease-info-container mb-3">
+                                    <span class="text-muted small d-block mb-1">Description</span>
+                                    <p class="small text-muted mb-3" id="disease-description">---</p>
+                                    
+                                    <span class="text-muted small d-block mb-1">Recommended Specialist</span>
+                                    <div class="mb-3">
+                                        <span class="badge bg-teal text-white p-2" id="disease-doctor"><i class="bi bi-person-fill-check me-1"></i>General Physician</span>
+                                    </div>
+                                    
+                                    <span class="text-muted small d-block mb-1">Possible Causes</span>
+                                    <ul class="small text-muted ps-3 mb-3" id="disease-causes">
+                                        <!-- Will populate dynamically -->
+                                    </ul>
+                                    
+                                    <span class="text-muted small d-block mb-1">Required Precautions</span>
+                                    <ul class="small text-muted ps-3 mb-3" id="disease-precautions">
+                                        <!-- Will populate dynamically -->
+                                    </ul>
+                                </div>
+                                
+                                <!-- PDF Download button link -->
+                                <a href="#" id="download-pdf-btn" class="btn btn-outline-teal w-100 d-none mt-3" target="_blank">
+                                    <i class="bi bi-file-earmark-pdf-fill me-2"></i>Download PDF Report
+                                </a>
+                            </div>
+
+                            
+                            <!-- Placeholder right panel -->
+                            <div class="card border-0 shadow-sm rounded-4 p-4 text-center justify-content-center d-flex flex-column align-items-center text-muted h-100" id="prediction-result-placeholder" style="min-height: 380px;">
+                                <i class="bi bi-shield-pulse text-teal bg-teal bg-opacity-10 rounded-circle p-3 fs-1 mb-3"></i>
+                                <h6 class="fw-bold text-dark">Awaiting Submission</h6>
+                                <p class="small mb-0 px-3">Select symptoms on the left check-grid and submit to generate diagnostic results.</p>
+                            </div>
+                        </div>
+
+                    </div>
+                </section>
+
+                <!-- 3. HISTORY SECTION -->
+                <section id="history-section" class="dashboard-section d-none animate-fade">
+                    <div class="mb-4">
+                        <h3 class="fw-bold text-dark">Prediction History Logs</h3>
+                        <p class="text-muted">View records of diagnostic queries generated during your active account session.</p>
+                    </div>
+
+                    <div class="card border-0 shadow-sm rounded-4 p-4">
+                        <!-- Filters Grid Row -->
+                        <div class="row g-3 mb-4 align-items-end">
+                            <div class="col-md-5">
+                                <label for="history-search" class="form-label small fw-bold text-muted">Search Logs</label>
+                                <div class="input-group">
+                                    <span class="input-group-text bg-white"><i class="bi bi-search text-muted"></i></span>
+                                    <input type="text" id="history-search" class="form-control" placeholder="Search by disease or symptom...">
+                                </div>
+                            </div>
+                            <div class="col-md-3 col-sm-6">
+                                <label for="history-date-from" class="form-label small fw-bold text-muted">From Date</label>
+                                <input type="date" id="history-date-from" class="form-control">
+                            </div>
+                            <div class="col-md-3 col-sm-6">
+                                <label for="history-date-to" class="form-label small fw-bold text-muted">To Date</label>
+                                <input type="date" id="history-date-to" class="form-control">
+                            </div>
+                            <div class="col-md-1 text-end">
+                                <button type="button" class="btn btn-outline-teal w-100" id="history-filter-reset" title="Reset Filters">
+                                    <i class="bi bi-arrow-counterclockwise"></i>
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="table-responsive">
+                            <table class="table custom-table mb-0 align-middle">
+                                <thead>
+                                    <tr>
+                                        <th scope="col" style="width: 80px;">ID</th>
+                                        <th scope="col" style="width: 180px;">Date & Time</th>
+                                        <th scope="col">Symptoms Analyzed</th>
+                                        <th scope="col" style="width: 220px;">Diagnosis & Confidence</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="history-tbody">
+                                    <!-- History rows are appended dynamically -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- 4. PROFILE SECTION -->
+                <section id="profile-section" class="dashboard-section d-none animate-fade">
+                    <div class="mb-4">
+                        <h3 class="fw-bold text-dark">Account Profile</h3>
+                        <p class="text-muted">View your account credentials and system registration dates.</p>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="card border-0 shadow-sm rounded-4 overflow-hidden">
+                                <div class="bg-teal text-white p-4" style="background: linear-gradient(135deg, var(--primary-color), var(--primary-light));">
+                                    <div class="d-flex align-items-center gap-3">
+                                        <div class="bg-white text-teal rounded-circle d-flex align-items-center justify-content-center fs-2 fw-bold" style="width: 70px; height: 70px;">
+                                            <i class="bi bi-person-vcard-fill"></i>
+                                        </div>
+                                        <div>
+                                            <h4 class="fw-bold mb-0" id="profile-name">User</h4>
+                                            <span class="small text-white-50">Registered Member</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="card-body p-4 bg-white">
+                                    <ul class="list-group list-group-flush">
+                                        <li class="list-group-item d-flex justify-content-between align-items-center px-0 py-3 border-bottom border-light">
+                                            <span class="text-muted"><i class="bi bi-envelope me-2 text-teal"></i>Email Address</span>
+                                            <strong class="text-dark" id="profile-email">---</strong>
+                                        </li>
+                                        <li class="list-group-item d-flex justify-content-between align-items-center px-0 py-3 border-0">
+                                            <span class="text-muted"><i class="bi bi-calendar-check me-2 text-teal"></i>Date Joined</span>
+                                            <strong class="text-dark" id="profile-date-joined">---</strong>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+            </div>
+        </main>
+        
+    </div>
+
+    <!-- Bootstrap Bundle JS CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- App Client Script -->
+    <script src="/static/js/app.js"></script>
+    <script>
+        // Inline layout toggle for mobile sidebar header
+        const innerClose = document.getElementById('sidebar-toggle-close');
+        if (innerClose) {
+            innerClose.addEventListener('click', () => {
+                document.getElementById('sidebar').classList.remove('show');
+            });
+        }
+        
+        // Hide placeholder panel and display result panel upon submission
+        document.getElementById('predict-form').addEventListener('submit', (e) => {
+            const checkedCount = document.querySelectorAll('#symptoms-grid input[type="checkbox"]:checked').length;
+            if (checkedCount > 0) {
+                document.getElementById('prediction-result-placeholder').classList.add('d-none');
+            }
+        });
+        
+        // Clearing selection resets result panels as well
+        document.getElementById('clear-selected-btn').addEventListener('click', () => {
+            document.getElementById('prediction-result-placeholder').classList.remove('d-none');
+            document.getElementById('prediction-result-wrapper').classList.add('d-none');
+        });
+    </script>
+</body>
+</html>
