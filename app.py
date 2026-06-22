@@ -5,6 +5,7 @@ from config import Config
 from db import init_db, close_db
 from controllers.auth import auth_bp
 from controllers.prediction import predict_bp
+from controllers.chat import chat_bp
 
 def create_app():
     """Application factory to configure and return the Flask application."""
@@ -20,6 +21,7 @@ def create_app():
     # Register controllers (Blueprints)
     app.register_blueprint(auth_bp)
     app.register_blueprint(predict_bp)
+    app.register_blueprint(chat_bp)
     
     # UI Navigation Routes
     @app.route('/')

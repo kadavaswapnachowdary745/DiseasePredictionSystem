@@ -255,6 +255,7 @@ function initDashboardPage() {
                 // Initialize modules
                 loadSymptomsList();
                 loadDashboardStats();
+                initChatbot();
             } else {
                 window.location.href = '/login';
             }
@@ -473,6 +474,9 @@ function initDashboardPage() {
                 downloadPdfBtn.classList.add('d-none');
             }
         }
+        
+        // Update chatbot quick replies with predicted disease context
+        updateChatbotWithPrediction(data.disease);
     }
 
     /**
@@ -659,6 +663,242 @@ function initDashboardPage() {
         const dateJoined = new Date(currentUser.created_at + 'Z');
         const dateJoinedEl = document.getElementById('profile-date-joined');
         if (dateJoinedEl) dateJoinedEl.textContent = dateJoined.toLocaleDateString();
+    }
+
+    /**
+     * Initializes the Chatbot UI widget and client-side message flows.
+     */
+    function initChatbot() {
+        const chatToggleBtn = document.getElementById('chat-toggle-btn');
+        const chatWidget = document.getElementById('chat-widget');
+        const chatCloseBtn = document.getElementById('chat-close-btn');
+        const chatMessagesBox = document.getElementById('chat-messages-box');
+        const chatInputForm = document.getElementById('chat-input-form');
+        const chatMessageInput = document.getElementById('chat-message-input');
+        const chatTypingIndicator = document.getElementById('chat-typing-indicator');
+        const clearChatBtn = document.getElementById('clear-chat-btn');
+        const chatSuggestions = document.getElementById('chat-suggestions');
+        const chatUnreadBadge = document.getElementById('chat-unread-badge');
+
+        let isChatOpen = false;
+
+        if (!chatToggleBtn || !chatWidget) return;
+
+        // Toggle Chat Window
+        chatToggleBtn.addEventListener('click', () => {
+            isChatOpen = !isChatOpen;
+            if (isChatOpen) {
+                chatWidget.classList.remove('d-none');
+                chatUnreadBadge.classList.add('d-none');
+                chatMessageInput.focus();
+                scrollToBottom();
+            } else {
+                chatWidget.classList.add('d-none');
+            }
+        });
+
+        if (chatCloseBtn) {
+            chatCloseBtn.addEventListener('click', () => {
+                isChatOpen = false;
+                chatWidget.classList.add('d-none');
+            });
+        }
+
+        // Clear Chat History
+        if (clearChatBtn) {
+            clearChatBtn.addEventListener('click', async () => {
+                if (confirm("Are you sure you want to clear your chat history?")) {
+                    try {
+                        const res = await fetch(`${API_BASE}/chat/clear`, { method: 'POST' });
+                        if (res.ok) {
+                            chatMessagesBox.innerHTML = '';
+                            appendBotMessage("Chat history cleared. How can I help you today?");
+                            showToast('Chat history cleared successfully.', 'success');
+                        } else {
+                            showToast('Failed to clear chat history.', 'danger');
+                        }
+                    } catch (err) {
+                        showToast('Error communicating with chatbot backend.', 'danger');
+                    }
+                }
+            });
+        }
+
+        // Submit Message Form
+        if (chatInputForm) {
+            chatInputForm.addEventListener('submit', async (e) => {
+                e.preventDefault();
+                const message = chatMessageInput.value.trim();
+                if (!message) return;
+
+                chatMessageInput.value = '';
+                appendUserMessage(message);
+                scrollToBottom();
+
+                // Show Typing Indicator
+                if (chatTypingIndicator) {
+                    chatTypingIndicator.classList.remove('d-none');
+                    scrollToBottom();
+                }
+
+                try {
+                    const res = await fetch(`${API_BASE}/chat/message`, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ message: message })
+                    });
+                    const data = await res.json();
+
+                    // Wait 600ms to simulate natural typing
+                    setTimeout(() => {
+                        if (chatTypingIndicator) chatTypingIndicator.classList.add('d-none');
+                        if (res.ok) {
+                            appendBotMessage(data.message, data.is_emergency);
+                        } else {
+                            appendBotMessage("Sorry, I encountered an error. Please try again.");
+                        }
+                        scrollToBottom();
+                    }, 600);
+
+                } catch (err) {
+                    setTimeout(() => {
+                        if (chatTypingIndicator) chatTypingIndicator.classList.add('d-none');
+                        appendBotMessage("Connection error. Please check your network.");
+                        scrollToBottom();
+                    }, 600);
+                }
+            });
+        }
+
+        // Handle Quick Replies Click
+        if (chatSuggestions) {
+            chatSuggestions.addEventListener('click', (e) => {
+                const btn = e.target.closest('.quick-reply-btn');
+                if (!btn) return;
+                const query = btn.getAttribute('data-query');
+                if (query) {
+                    chatMessageInput.value = query;
+                    chatInputForm.dispatchEvent(new Event('submit'));
+                }
+            });
+        }
+
+        // Fetch Initial Chat History
+        async function fetchHistory() {
+            try {
+                const res = await fetch(`${API_BASE}/chat/history`);
+                if (res.ok) {
+                    const data = await res.json();
+                    chatMessagesBox.innerHTML = '';
+                    if (data.history && data.history.length > 0) {
+                        data.history.forEach(msg => {
+                            if (msg.sender === 'user') {
+                                appendUserMessage(msg.message);
+                            } else {
+                                const isEmergency = msg.message.includes("EMERGENCY WARNING");
+                                appendBotMessage(msg.message, isEmergency);
+                            }
+                        });
+                    } else {
+                        appendBotMessage("Hello! I am your AI Health Assistant. I can help explain your diagnoses, suggest diets, precautions, lifestyle changes, recommend doctor specialties, or answer health FAQs.\n\nAsk me anything or use the suggestion buttons below!");
+                    }
+                    scrollToBottom();
+                }
+            } catch (err) {
+                console.error("Failed to load chat history:", err);
+            }
+        }
+
+        // Helper: Append User Message
+        function appendUserMessage(text) {
+            const div = document.createElement('div');
+            div.className = 'message message-user';
+            div.innerHTML = `
+                <div class="message-bubble">${escapeHTML(text)}</div>
+            `;
+            chatMessagesBox.appendChild(div);
+        }
+
+        // Helper: Append Bot Message
+        function appendBotMessage(text, isEmergency = false) {
+            const div = document.createElement('div');
+            div.className = `message message-bot ${isEmergency ? 'message-emergency' : ''}`;
+            
+            // Format basic markdown like bold texts and bullet points
+            const formatted = formatMarkdown(text);
+            div.innerHTML = `
+                <div class="message-bubble">${formatted}</div>
+            `;
+            chatMessagesBox.appendChild(div);
+        }
+
+        // Helper: Scroll to Bottom
+        function scrollToBottom() {
+            chatMessagesBox.scrollTop = chatMessagesBox.scrollHeight;
+        }
+
+        // Helper to format basic markdown links, bolding, lists, and line breaks
+        function formatMarkdown(text) {
+            let html = escapeHTML(text);
+            
+            // Bold text: **text** -> <strong>text</strong>
+            html = html.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+            
+            // Italic text: *text* -> <em>text</em>
+            html = html.replace(/\*(.*?)\*/g, '<em>$1</em>');
+            
+            // Replace bullets with line breaks and bullet character
+            html = html.replace(/(?:^|\n)•\s+(.*?)(?=\n|$)/g, '<br>• $1');
+            
+            // Replace newlines with break tags
+            html = html.replace(/\n/g, '<br>');
+            
+            // Remove duplicate breaks
+            html = html.replace(/(<br>){3,}/g, '<br><br>');
+            
+            return html;
+        }
+
+        // Escape HTML to prevent XSS
+        function escapeHTML(str) {
+            return str.replace(/[&<>'"]/g, 
+                tag => ({
+                    '&': '&amp;',
+                    '<': '&lt;',
+                    '>': '&gt;',
+                    "'": '&#39;',
+                    '"': '&quot;'
+                }[tag] || tag)
+            );
+        }
+
+        // Load history on initialization
+        fetchHistory();
+    }
+
+    /**
+     * Updates the chatbot widget with prediction contextual options.
+     */
+    function updateChatbotWithPrediction(diseaseName) {
+        const chatUnreadBadge = document.getElementById('chat-unread-badge');
+        const chatWidget = document.getElementById('chat-widget');
+        const chatSuggestions = document.getElementById('chat-suggestions');
+
+        if (chatSuggestions) {
+            chatSuggestions.innerHTML = `
+                <button class="btn btn-xs quick-reply-btn" data-query="Explain my prediction">Explain Diagnosis</button>
+                <button class="btn btn-xs quick-reply-btn" data-query="Diet recommendations for my prediction">Diet Tips</button>
+                <button class="btn btn-xs quick-reply-btn" data-query="What are the precautions for my prediction?">Precautions</button>
+                <button class="btn btn-xs quick-reply-btn" data-query="What doctor should I see for ${diseaseName}?">Recommend Specialist</button>
+            `;
+        }
+
+        // Show unread pulse notification if chat is not currently open
+        if (chatWidget && chatWidget.classList.contains('d-none')) {
+            if (chatUnreadBadge) {
+                chatUnreadBadge.classList.remove('d-none');
+            }
+        }
     }
 }
 

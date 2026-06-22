@@ -380,7 +380,68 @@
 
             </div>
         </main>
-        
+    </div>
+
+    <!-- Chatbot Widget Floating FAB and Chat Window -->
+    <div class="chatbot-toggle-btn animate-pulse" id="chat-toggle-btn" title="Open Health Assistant">
+        <i class="bi bi-chat-dots-fill text-white fs-4"></i>
+        <span class="chat-badge d-none" id="chat-unread-badge">!</span>
+    </div>
+
+    <div class="chat-widget-container d-none" id="chat-widget">
+        <div class="chat-header d-flex align-items-center justify-content-between">
+            <div class="d-flex align-items-center gap-2">
+                <div class="bg-white bg-opacity-20 rounded-circle p-2 d-flex align-items-center justify-content-center" style="width: 36px; height: 36px;">
+                    <i class="bi bi-heart-pulse-fill text-white fs-5"></i>
+                </div>
+                <div>
+                    <h6 class="mb-0 fw-bold text-white small">Health Assistant</h6>
+                    <small class="text-white-50" style="font-size: 10px;">AI Support Active</small>
+                </div>
+            </div>
+            <div class="d-flex align-items-center gap-2">
+                <button class="btn btn-sm btn-link text-white-50 hover-white p-0" id="clear-chat-btn" title="Clear Chat History">
+                    <i class="bi bi-trash-fill text-white-50"></i>
+                </button>
+                <button class="btn btn-sm btn-link text-white-50 hover-white p-0" id="chat-close-btn" title="Minimize">
+                    <i class="bi bi-dash-lg"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- Medical Disclaimer Banner (Fixed at top of chat area) -->
+        <div class="chat-disclaimer-banner text-center py-2 px-3">
+            <i class="bi bi-exclamation-circle-fill me-1 text-warning"></i>
+            Disclaimer: Not a replacement for professional medical advice.
+        </div>
+
+        <!-- Chat Messages Scroll Container -->
+        <div class="chat-messages" id="chat-messages-box">
+            <!-- Initial chatbot message will be placed here by javascript or loaded from database -->
+        </div>
+
+        <!-- Typing Indicator -->
+        <div class="typing-indicator-box d-none" id="chat-typing-indicator">
+            <div class="typing-dot"></div>
+            <div class="typing-dot"></div>
+            <div class="typing-dot"></div>
+        </div>
+
+        <!-- Suggestions/Quick Replies -->
+        <div class="chat-quick-replies d-flex flex-wrap gap-1 px-3 py-2" id="chat-suggestions">
+            <button class="btn btn-xs quick-reply-btn" data-query="Explain my prediction">Explain Diagnosis</button>
+            <button class="btn btn-xs quick-reply-btn" data-query="Diet recommendations for my prediction">Diet Tips</button>
+            <button class="btn btn-xs quick-reply-btn" data-query="What are the precautions for my prediction?">Precautions</button>
+            <button class="btn btn-xs quick-reply-btn" data-query="How can I boost my immune system?">Boost Immunity</button>
+        </div>
+
+        <!-- Input Form -->
+        <form class="chat-input-area d-flex align-items-center p-2" id="chat-input-form">
+            <input type="text" id="chat-message-input" class="form-control me-2" placeholder="Ask a health question..." autocomplete="off">
+            <button type="submit" class="btn btn-teal-send d-flex align-items-center justify-content-center" id="chat-send-btn">
+                <i class="bi bi-send-fill text-white"></i>
+            </button>
+        </form>
     </div>
 
     <!-- Bootstrap Bundle JS CDN -->

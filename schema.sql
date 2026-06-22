@@ -29,6 +29,19 @@ CREATE TABLE IF NOT EXISTS disease_info (
     causes TEXT NOT NULL,            -- JSON serialized list of causes
     symptoms TEXT NOT NULL,          -- JSON serialized list of typical symptoms
     precautions TEXT NOT NULL,       -- JSON serialized list of precautions
+    diet_recommendations TEXT NOT NULL, -- JSON serialized list of diet recommendations
+    lifestyle_changes TEXT NOT NULL,    -- JSON serialized list of lifestyle changes
     recommended_doctor TEXT NOT NULL
 );
+
+-- Chat History Table
+CREATE TABLE IF NOT EXISTS chat_history (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    user_id INTEGER NOT NULL,
+    sender TEXT NOT NULL,            -- 'user' or 'bot'
+    message TEXT NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE CASCADE
+);
+
 
