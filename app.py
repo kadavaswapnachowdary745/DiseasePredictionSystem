@@ -11,13 +11,16 @@ def create_app():
     """Application factory to configure and return the Flask application."""
     app = Flask(__name__)
     app.config.from_object(Config)
-    
+
+    # Ensure the SQLite database exists and schema is initialized before requests are processed.
+    init_db()
+
     # Configure CORS. Allow credentials (cookies) to persist sessions from a frontend client.
     CORS(app, supports_credentials=True)
-    
+
     # Register DB connection cleanup teardown hook
     app.teardown_appcontext(close_db)
-    
+
     # Register controllers (Blueprints)
     app.register_blueprint(auth_bp)
     app.register_blueprint(predict_bp)
@@ -75,10 +78,7 @@ def create_app():
     return app
 
 if __name__ == '__main__':
-    # Initialize SQLite database (runs schema.sql commands to build tables if missing)
     print("Checking database status...")
-    init_db()
-    
     app = create_app()
     print("Starting Flask application server...")
     port = int(os.environ.get('PORT', 5001))

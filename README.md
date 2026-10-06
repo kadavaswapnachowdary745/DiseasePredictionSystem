@@ -1,106 +1,135 @@
-# Disease Prediction System Using Machine Learning
+# PrediHealth — Streamlit-Based Multi-Disease Prediction System for Early Disease Detection Using Machine Learning
 
-A complete Python-based medical AI mini-project that generates a clinical dataset, trains a Random Forest Classifier to identify 20 diseases from 42 symptoms, and exposes a production-ready Flask REST API with SQLite database integration, session-based authentication, password hashing, and user prediction history logs.
+PrediHealth is a complete, multi-disease prediction platform that combines **General Symptom-Based Prediction** across 20 diseases with **Specialized Disease Diagnosis** across 6 clinical conditions (**Heart Disease, Chronic Kidney Disease, Breast Cancer, Liver Disease, Stroke, and Lung Cancer**).
+
+The system features a dual architecture supporting both a **Flask REST API Web Application** and a **Streamlit Multi-Page Machine Learning Interface**, integrated with a persistent SQLite database, Explainable AI (XAI), session authentication, and ReportLab PDF clinical report generation.
 
 ---
 
-## 📁 Project Folder Structure
+## 🏗️ System Architecture
 
 ```
-mini_project/
+                    PREDIHEALTH PLATFORM
+                             |
+             ┌───────────────┴───────────────┐
+             |                               |
+      GENERAL PREDICTION              SPECIALIZED DIAGNOSIS
+             |                               |
+      Existing Model (Random Forest)    Six Disease Models
+             |                               |
+      20 Diseases                    ┌───────┼───────┐
+                                     |       |       |
+                                   Heart   Kidney  Breast
+                                     |       |       |
+                                   Liver   Stroke  Lung Cancer
+```
+
+### 1. General Symptom-Based Prediction (20 Diseases)
+- **Model**: Trained `RandomForestClassifier` (100 estimators, `models/disease_model.pkl`)
+- **Features**: 42 clinical symptoms (`models/symptoms.json`)
+- **Dataset**: `data/disease_symptoms.csv` (1,600 samples)
+- **Capabilities**: Multi-symptom pattern matching, top-3 class probabilities, Explainable AI (XAI) feature contribution analysis, PDF report download.
+
+### 2. Specialized Disease Diagnosis (6 Diseases)
+Each specialized disease is trained on dedicated public datasets, evaluating **5 algorithms** (Random Forest, XGBoost, Decision Tree, K-Nearest Neighbors, Gradient Boosting) to select the optimal model pipeline (`models/specialized/`):
+
+1. **Heart Disease**: Cleveland Dataset (13 clinical parameters, **Random Forest** selected, F1: 91.82%)
+2. **Chronic Kidney Disease (CKD)**: UCI CKD Dataset (24 parameters, **Random Forest** selected, F1: 100.00%)
+3. **Breast Cancer**: Wisconsin Diagnostic FNA Dataset (30 parameters, **Random Forest** selected, F1: 95.60%)
+4. **Liver Disease**: Indian Liver Patient Dataset (10 parameters, **Random Forest** selected, F1: 69.64%)
+5. **Stroke**: Healthcare Stroke Dataset (10 parameters, **XGBoost** selected, F1: 93.12%)
+6. **Lung Cancer**: Survey Lung Cancer Dataset (15 survey parameters, **Decision Tree** selected, F1: 93.85%)
+
+---
+
+## 📁 Folder Structure
+
+```
+DiseasePredictionSystem/
 ├── data/
-│   └── disease_symptoms.csv       # Synthetic dataset (1,600 samples, 42 symptoms, 20 diseases)
+│   ├── disease_symptoms.csv       # General 20-disease symptoms dataset (1,600 samples, 42 symptoms)
+│   ├── heart_disease.csv          # Heart Disease dataset (303 samples, 13 features)
+│   ├── kidney_disease.csv         # Chronic Kidney Disease dataset (400 samples, 24 features)
+│   ├── breast_cancer.csv          # Breast Cancer dataset (569 samples, 30 features)
+│   ├── liver_disease.csv          # Indian Liver Patient dataset (583 samples, 10 features)
+│   ├── stroke.csv                 # Healthcare Stroke dataset (5,110 samples, 10 features)
+│   ├── lung_cancer.csv            # Survey Lung Cancer dataset (309 samples, 15 features)
+│   └── DATASET_SOURCES.md         # Documented origins, preprocessing, and features of datasets
 ├── models/
-│   ├── disease_model.pkl          # Trained Random Forest model (joblib)
-│   ├── symptoms.json              # Symptom features list defining columns order
-│   ├── user.py                 # User database query model (password hashing)
-│   └── prediction.py           # Prediction database logger model
+│   ├── disease_model.pkl          # Serialized 20-disease Random Forest model
+│   ├── symptoms.json              # 42 general symptom features definition
+│   ├── specialized/               # Serialized specialized models & benchmark metadata
+│   │   ├── heart_disease_model.pkl
+│   │   ├── kidney_disease_model.pkl
+│   │   ├── breast_cancer_model.pkl
+│   │   ├── liver_disease_model.pkl
+│   │   ├── stroke_model.pkl
+│   │   ├── lung_cancer_model.pkl
+│   │   └── specialized_metadata.json
+│   ├── user.py                    # User authentication database model
+│   └── prediction.py              # Prediction history database model
 ├── controllers/
-│   ├── auth.py                 # User authentication routing blueprint
-│   └── prediction.py           # ML prediction & history routing blueprint
-├── app.py                      # Main Flask server entrypoint (CORS, error handers)
-├── config.py                   # Global configuration for SQLite DB and Secret Key
-├── db.py                       # SQLite connection pooling and initialization logic
-├── schema.sql                  # SQLite database table definitions DDL
-├── generate_dataset.py            # Dataset generator script
-├── train_model.py                 # ML training and evaluation script
-├── verify_backend.py              # Automated test client script (uses Flask TestClient)
-├── requirements.txt               # Python library dependencies
+│   ├── auth.py                    # Flask authentication blueprint
+│   ├── chat.py                    # Health Assistant chatbot engine
+│   └── prediction.py              # Flask ML prediction & PDF generator blueprint
+├── static/                        # CSS/JS web assets for Flask
+├── templates/                     # Jinja2 HTML templates for Flask
+├── app.py                         # Main Flask server entrypoint (Port 5000)
+├── streamlit_app.py               # Streamlit Multi-Page Web Application
+├── train_model.py                 # General 20-disease Random Forest training script
+├── train_specialized_models.py    # Specialized models training & benchmarking pipeline
+├── config.py                      # Database path & configuration
+├── db.py                          # SQLite database connection & migrations
+├── schema.sql                     # Database DDL schema definition
+├── requirements.txt               # Required Python packages
 └── README.md                      # Project documentation (this file)
 ```
 
 ---
 
-## 📄 File Explanations
+## 📊 Benchmark Results — Specialized Disease Models
 
-### 1. `requirements.txt`
-Declares the third-party Python packages:
-- `scikit-learn` & `pandas` & `numpy`: Machine Learning and data manipulation tools.
-- `joblib`: Serializes the Scikit-learn model object to disk.
-- `Flask` & `Flask-Cors` & `werkzeug`: Web framework, Cross-Origin Request configuration, and secure password hashing algorithms.
-
-### 2. `generate_dataset.py`
-Generates a realistic clinical dataset of 1,600 samples covering **20 diseases** and **42 symptoms** based on localized symptom probability distributions with added noise (2%). Saves output to `data/disease_symptoms.csv`.
-
-### 3. `train_model.py`
-Builds and evaluates the machine learning model:
-- Implements stratified train-test splits (80-20).
-- Fits a `RandomForestClassifier` (100 decision trees) achieving **95% accuracy**.
-- Saves model to `models/disease_model.pkl` and mapping headers to `models/symptoms.json`.
-
-### 4. Database Layer (`schema.sql`, `db.py`, `config.py`)
-- `schema.sql`: Standard DDL defining the SQLite schema:
-  - **`users` Table**: `id`, `username` (unique), `email` (unique), `password_hash`, `created_at`.
-  - **`predictions` Table**: `id`, `user_id` (foreign key), `symptoms` (JSON list), `predicted_disease`, `confidence`, `created_at`.
-- `db.py`: Connects to SQLite and populates database tables upon app startup.
-
-### 5. MVC Models (`models/user.py`, `models/prediction.py`)
-Encapsulates SQLite interactions:
-- `user.py`: Creates user profiles with hashed passwords using Werkzeug `generate_password_hash` and checks passwords with `check_password_hash`.
-- `prediction.py`: Stores predictions and queries database logs sorted chronologically.
-
-### 6. MVC Controllers (`controllers/auth.py`, `controllers/prediction.py`)
-API endpoints structuring system inputs and outputs:
-- `auth.py`: Controls routes `/api/auth/register`, `/api/auth/login`, `/api/auth/logout`, and `/api/auth/me`.
-- `prediction.py`:
-  - `/api/predict` (POST): Accepts JSON list of symptoms, computes predictions using the trained model, and logs outputs to database if session is active.
-  - `/api/predictions/history` (GET): Fetches user history records.
+| Disease | Best Selected Algorithm | Accuracy | Precision | Recall | F1 Score |
+| :--- | :--- | :---: | :---: | :---: | :---: |
+| **Heart Disease** | Random Forest | 91.80% | 92.27% | 91.80% | **91.82%** |
+| **Chronic Kidney Disease** | Random Forest | 100.00% | 100.00% | 100.00% | **100.00%** |
+| **Breast Cancer** | Random Forest | 95.61% | 95.61% | 95.61% | **95.60%** |
+| **Liver Disease** | Random Forest | 72.65% | 69.89% | 72.65% | **69.64%** |
+| **Stroke** | XGBoost | 94.91% | 92.53% | 94.91% | **93.12%** |
+| **Lung Cancer** | Decision Tree | 93.55% | 94.45% | 93.55% | **93.85%** |
 
 ---
 
-## ⚡ API Endpoints reference
+## 🚀 How to Run the Project
 
-| Method | Endpoint | Description | Auth Required | Payload / Response |
-| :--- | :--- | :--- | :---: | :--- |
-| **POST** | `/api/auth/register` | Register a new user profile | No | `{ "username": "doc", "email": "doc@hosp.com", "password": "password123" }` |
-| **POST** | `/api/auth/login` | Authenticate user and start session | No | `{ "username": "doc", "password": "password123" }` |
-| **POST** | `/api/auth/logout` | End active session | No | `{}` |
-| **GET** | `/api/auth/me` | Fetch active user credentials | Yes | Returns user metadata |
-| **POST** | `/api/predict` | Get ML disease classification | No | Send `{ "symptoms": ["cough", "fever"] }` |
-| **GET** | `/api/predictions/history` | Retrieve prediction history | Yes | Returns list of user's predictions |
+### 1. Install Dependencies
+```bash
+pip install -r requirements.txt
+```
+
+### 2. Retrain Machine Learning Models (Optional)
+- Train General 20-disease model:
+  ```bash
+  python3 train_model.py
+  ```
+- Train and benchmark 6 Specialized Disease models:
+  ```bash
+  python3 train_specialized_models.py
+  ```
+
+### 3. Launch Streamlit Application
+```bash
+streamlit run streamlit_app.py
+```
+Access Streamlit UI at: `http://localhost:8501`
+
+### 4. Launch Flask Web Application
+```bash
+python3 app.py
+```
+Access Flask Web App at: `http://localhost:5000`
 
 ---
 
-## 🚀 How to Run
-
-1. **Install Dependencies**:
-   ```bash
-   pip install -r requirements.txt
-   ```
-
-2. **Generate Dataset and Train Model**:
-   ```bash
-   python3 generate_dataset.py
-   python3 train_model.py
-   ```
-
-3. **Verify API Endpoints**:
-   ```bash
-   python3 verify_backend.py
-   ```
-
-4. **Launch Flask Server**:
-   ```bash
-   python3 app.py
-   ```
-   The server will start running on `http://localhost:5000`.
+## ⚠️ Academic Medical Disclaimer
+This system is intended for educational and research demonstration purposes only. Machine learning predictions are not a medical diagnosis and should not replace professional medical evaluation. Always consult a qualified healthcare professional for medical concerns.

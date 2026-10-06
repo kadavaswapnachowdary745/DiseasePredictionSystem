@@ -3,17 +3,18 @@ from db import query_db, insert_db
 
 class Prediction:
     @staticmethod
-    def create(user_id, symptoms, predicted_disease, confidence):
+    def create(user_id, symptoms, predicted_disease, confidence, prediction_type='General'):
         """
         Saves a new disease prediction entry in the database.
-        - symptoms: a list of symptom strings (e.g., ['fever', 'cough'])
+        - symptoms: a list or dict of input symptoms/attributes
         - predicted_disease: string name of the diagnosed disease
-        - confidence: float representing prediction confidence
+        - confidence: float representing prediction confidence or probability
+        - prediction_type: 'General' or 'Specialized'
         """
-        symptoms_str = json.dumps(symptoms)
+        symptoms_str = json.dumps(symptoms) if isinstance(symptoms, (list, dict)) else str(symptoms)
         prediction_id = insert_db(
-            "INSERT INTO predictions (user_id, symptoms, predicted_disease, confidence) VALUES (?, ?, ?, ?)",
-            (user_id, symptoms_str, predicted_disease, confidence)
+            "INSERT INTO predictions (user_id, symptoms, predicted_disease, confidence, prediction_type) VALUES (?, ?, ?, ?, ?)",
+            (user_id, symptoms_str, predicted_disease, confidence, prediction_type)
         )
         return prediction_id
 
@@ -24,7 +25,7 @@ class Prediction:
         ordered from newest to oldest.
         """
         rows = query_db(
-            "SELECT id, symptoms, predicted_disease, confidence, created_at "
+            "SELECT id, symptoms, predicted_disease, confidence, prediction_type, created_at "
             "FROM predictions "
             "WHERE user_id = ? "
             "ORDER BY created_at DESC",
@@ -35,11 +36,11 @@ class Prediction:
         for row in rows:
             record = dict(row)
             try:
-                # Deserialize the JSON string of symptoms back to a list
                 record['symptoms'] = json.loads(record['symptoms'])
             except (json.JSONDecodeError, TypeError):
-                # Fallback in case of parse error
-                record['symptoms'] = []
+                pass
+            if 'prediction_type' not in record or not record['prediction_type']:
+                record['prediction_type'] = 'General'
             history.append(record)
             
         return history
@@ -48,7 +49,7 @@ class Prediction:
     def get_by_id(prediction_id):
         """Retrieves a single prediction entry by its ID."""
         row = query_db(
-            "SELECT id, user_id, symptoms, predicted_disease, confidence, created_at "
+            "SELECT id, user_id, symptoms, predicted_disease, confidence, prediction_type, created_at "
             "FROM predictions "
             "WHERE id = ?",
             (prediction_id,),
@@ -61,7 +62,9 @@ class Prediction:
         try:
             record['symptoms'] = json.loads(record['symptoms'])
         except (json.JSONDecodeError, TypeError):
-            record['symptoms'] = []
+            pass
+        if 'prediction_type' not in record or not record['prediction_type']:
+            record['prediction_type'] = 'General'
             
         return record
 

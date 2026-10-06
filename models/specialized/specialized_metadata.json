@@ -1,0 +1,649 @@
+{
+  "heart_disease": {
+    "display_name": "Heart Disease",
+    "model_file": "heart_disease_model.pkl",
+    "dataset_records": 303,
+    "feature_count": 13,
+    "feature_names": [
+      "age",
+      "trestbps",
+      "chol",
+      "thalach",
+      "oldpeak",
+      "sex",
+      "cp",
+      "fbs",
+      "restecg",
+      "exang",
+      "slope",
+      "ca",
+      "thal"
+    ],
+    "numeric_features": [
+      "age",
+      "trestbps",
+      "chol",
+      "thalach",
+      "oldpeak"
+    ],
+    "categorical_features": [
+      "sex",
+      "cp",
+      "fbs",
+      "restecg",
+      "exang",
+      "slope",
+      "ca",
+      "thal"
+    ],
+    "target_names": {
+      "0": "Lower Risk / No Disease",
+      "1": "Higher Risk / Disease Present"
+    },
+    "selected_algorithm": "Random Forest",
+    "best_f1_score": 0.9182,
+    "evaluation_comparison": [
+      {
+        "algorithm": "Random Forest",
+        "accuracy": 0.918,
+        "precision": 0.9227,
+        "recall": 0.918,
+        "f1_score": 0.9182
+      },
+      {
+        "algorithm": "XGBoost",
+        "accuracy": 0.8525,
+        "precision": 0.864,
+        "recall": 0.8525,
+        "f1_score": 0.8525
+      },
+      {
+        "algorithm": "Decision Tree",
+        "accuracy": 0.7705,
+        "precision": 0.7848,
+        "recall": 0.7705,
+        "f1_score": 0.7701
+      },
+      {
+        "algorithm": "K-Nearest Neighbors",
+        "accuracy": 0.8361,
+        "precision": 0.8436,
+        "recall": 0.8361,
+        "f1_score": 0.8362
+      },
+      {
+        "algorithm": "Gradient Boosting",
+        "accuracy": 0.8525,
+        "precision": 0.864,
+        "recall": 0.8525,
+        "f1_score": 0.8525
+      }
+    ],
+    "feature_importances": {
+      "age": 0.0904,
+      "trestbps": 0.0717,
+      "chol": 0.0927,
+      "thalach": 0.1264,
+      "oldpeak": 0.0968,
+      "sex": 0.0409,
+      "cp": 0.1328,
+      "fbs": 0.0104,
+      "restecg": 0.0224,
+      "exang": 0.0603,
+      "slope": 0.0385,
+      "ca": 0.0947,
+      "thal": 0.1218
+    }
+  },
+  "kidney_disease": {
+    "display_name": "Chronic Kidney Disease",
+    "model_file": "kidney_disease_model.pkl",
+    "dataset_records": 400,
+    "feature_count": 24,
+    "feature_names": [
+      "age",
+      "bp",
+      "bgr",
+      "bu",
+      "sc",
+      "sod",
+      "pot",
+      "hemo",
+      "pcv",
+      "wc",
+      "rc",
+      "sg",
+      "al",
+      "su",
+      "rbc",
+      "pc",
+      "pcc",
+      "ba",
+      "htn",
+      "dm",
+      "cad",
+      "appet",
+      "pe",
+      "ane"
+    ],
+    "numeric_features": [
+      "age",
+      "bp",
+      "bgr",
+      "bu",
+      "sc",
+      "sod",
+      "pot",
+      "hemo",
+      "pcv",
+      "wc",
+      "rc"
+    ],
+    "categorical_features": [
+      "sg",
+      "al",
+      "su",
+      "rbc",
+      "pc",
+      "pcc",
+      "ba",
+      "htn",
+      "dm",
+      "cad",
+      "appet",
+      "pe",
+      "ane"
+    ],
+    "target_names": {
+      "0": "Not CKD / Lower Risk",
+      "1": "CKD Present / Higher Risk"
+    },
+    "selected_algorithm": "Random Forest",
+    "best_f1_score": 1.0,
+    "evaluation_comparison": [
+      {
+        "algorithm": "Random Forest",
+        "accuracy": 1.0,
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1_score": 1.0
+      },
+      {
+        "algorithm": "XGBoost",
+        "accuracy": 1.0,
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1_score": 1.0
+      },
+      {
+        "algorithm": "Decision Tree",
+        "accuracy": 0.9625,
+        "precision": 0.9631,
+        "recall": 0.9625,
+        "f1_score": 0.9626
+      },
+      {
+        "algorithm": "K-Nearest Neighbors",
+        "accuracy": 0.9625,
+        "precision": 0.9659,
+        "recall": 0.9625,
+        "f1_score": 0.9628
+      },
+      {
+        "algorithm": "Gradient Boosting",
+        "accuracy": 1.0,
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1_score": 1.0
+      }
+    ],
+    "feature_importances": {
+      "age": 0.0084,
+      "bp": 0.0109,
+      "bgr": 0.0227,
+      "bu": 0.0223,
+      "sc": 0.1217,
+      "sod": 0.0241,
+      "pot": 0.0093,
+      "hemo": 0.2065,
+      "pcv": 0.1973,
+      "wc": 0.0063,
+      "rc": 0.1068,
+      "sg": 0.085,
+      "al": 0.0601,
+      "su": 0.0073,
+      "rbc": 0.0029,
+      "pc": 0.0037,
+      "pcc": 0.001,
+      "ba": 0.0004,
+      "htn": 0.0589,
+      "dm": 0.0321,
+      "cad": 0.0002,
+      "appet": 0.005,
+      "pe": 0.0045,
+      "ane": 0.0026
+    }
+  },
+  "breast_cancer": {
+    "display_name": "Breast Cancer",
+    "model_file": "breast_cancer_model.pkl",
+    "dataset_records": 569,
+    "feature_count": 30,
+    "feature_names": [
+      "mean radius",
+      "mean texture",
+      "mean perimeter",
+      "mean area",
+      "mean smoothness",
+      "mean compactness",
+      "mean concavity",
+      "mean concave points",
+      "mean symmetry",
+      "mean fractal dimension",
+      "radius error",
+      "texture error",
+      "perimeter error",
+      "area error",
+      "smoothness error",
+      "compactness error",
+      "concavity error",
+      "concave points error",
+      "symmetry error",
+      "fractal dimension error",
+      "worst radius",
+      "worst texture",
+      "worst perimeter",
+      "worst area",
+      "worst smoothness",
+      "worst compactness",
+      "worst concavity",
+      "worst concave points",
+      "worst symmetry",
+      "worst fractal dimension"
+    ],
+    "numeric_features": [
+      "mean radius",
+      "mean texture",
+      "mean perimeter",
+      "mean area",
+      "mean smoothness",
+      "mean compactness",
+      "mean concavity",
+      "mean concave points",
+      "mean symmetry",
+      "mean fractal dimension",
+      "radius error",
+      "texture error",
+      "perimeter error",
+      "area error",
+      "smoothness error",
+      "compactness error",
+      "concavity error",
+      "concave points error",
+      "symmetry error",
+      "fractal dimension error",
+      "worst radius",
+      "worst texture",
+      "worst perimeter",
+      "worst area",
+      "worst smoothness",
+      "worst compactness",
+      "worst concavity",
+      "worst concave points",
+      "worst symmetry",
+      "worst fractal dimension"
+    ],
+    "categorical_features": [],
+    "target_names": {
+      "0": "Malignant (Higher Risk)",
+      "1": "Benign (Lower Risk)"
+    },
+    "selected_algorithm": "Random Forest",
+    "best_f1_score": 0.956,
+    "evaluation_comparison": [
+      {
+        "algorithm": "Random Forest",
+        "accuracy": 0.9561,
+        "precision": 0.9561,
+        "recall": 0.9561,
+        "f1_score": 0.956
+      },
+      {
+        "algorithm": "XGBoost",
+        "accuracy": 0.9561,
+        "precision": 0.9569,
+        "recall": 0.9561,
+        "f1_score": 0.9558
+      },
+      {
+        "algorithm": "Decision Tree",
+        "accuracy": 0.9123,
+        "precision": 0.9161,
+        "recall": 0.9123,
+        "f1_score": 0.913
+      },
+      {
+        "algorithm": "K-Nearest Neighbors",
+        "accuracy": 0.9561,
+        "precision": 0.9561,
+        "recall": 0.9561,
+        "f1_score": 0.956
+      },
+      {
+        "algorithm": "Gradient Boosting",
+        "accuracy": 0.9561,
+        "precision": 0.9569,
+        "recall": 0.9561,
+        "f1_score": 0.9558
+      }
+    ],
+    "feature_importances": {
+      "mean radius": 0.0687,
+      "mean texture": 0.0096,
+      "mean perimeter": 0.0696,
+      "mean area": 0.0492,
+      "mean smoothness": 0.0056,
+      "mean compactness": 0.0117,
+      "mean concavity": 0.0576,
+      "mean concave points": 0.0909,
+      "mean symmetry": 0.0047,
+      "mean fractal dimension": 0.0045,
+      "radius error": 0.0168,
+      "texture error": 0.0052,
+      "perimeter error": 0.0096,
+      "area error": 0.0331,
+      "smoothness error": 0.0035,
+      "compactness error": 0.006,
+      "concavity error": 0.0043,
+      "concave points error": 0.0041,
+      "symmetry error": 0.004,
+      "fractal dimension error": 0.0044,
+      "worst radius": 0.0977,
+      "worst texture": 0.0186,
+      "worst perimeter": 0.0722,
+      "worst area": 0.14,
+      "worst smoothness": 0.0124,
+      "worst compactness": 0.0186,
+      "worst concavity": 0.0343,
+      "worst concave points": 0.1295,
+      "worst symmetry": 0.0083,
+      "worst fractal dimension": 0.0052
+    }
+  },
+  "liver_disease": {
+    "display_name": "Liver Disease",
+    "model_file": "liver_disease_model.pkl",
+    "dataset_records": 583,
+    "feature_count": 10,
+    "feature_names": [
+      "age",
+      "total_bilirubin",
+      "direct_bilirubin",
+      "alkaline_phosphotase",
+      "alamine_aminotransferase",
+      "aspartate_aminotransferase",
+      "total_proteins",
+      "albumin",
+      "albumin_and_globulin_ratio",
+      "gender"
+    ],
+    "numeric_features": [
+      "age",
+      "total_bilirubin",
+      "direct_bilirubin",
+      "alkaline_phosphotase",
+      "alamine_aminotransferase",
+      "aspartate_aminotransferase",
+      "total_proteins",
+      "albumin",
+      "albumin_and_globulin_ratio"
+    ],
+    "categorical_features": [
+      "gender"
+    ],
+    "target_names": {
+      "0": "Lower Risk / No Disease",
+      "1": "Higher Risk / Disease Present"
+    },
+    "selected_algorithm": "Random Forest",
+    "best_f1_score": 0.6964,
+    "evaluation_comparison": [
+      {
+        "algorithm": "Random Forest",
+        "accuracy": 0.7265,
+        "precision": 0.6989,
+        "recall": 0.7265,
+        "f1_score": 0.6964
+      },
+      {
+        "algorithm": "XGBoost",
+        "accuracy": 0.7265,
+        "precision": 0.6989,
+        "recall": 0.7265,
+        "f1_score": 0.6964
+      },
+      {
+        "algorithm": "Decision Tree",
+        "accuracy": 0.547,
+        "precision": 0.5509,
+        "recall": 0.547,
+        "f1_score": 0.5489
+      },
+      {
+        "algorithm": "K-Nearest Neighbors",
+        "accuracy": 0.6838,
+        "precision": 0.6492,
+        "recall": 0.6838,
+        "f1_score": 0.6579
+      },
+      {
+        "algorithm": "Gradient Boosting",
+        "accuracy": 0.6838,
+        "precision": 0.6375,
+        "recall": 0.6838,
+        "f1_score": 0.6457
+      }
+    ],
+    "feature_importances": {
+      "age": 0.1425,
+      "total_bilirubin": 0.0932,
+      "direct_bilirubin": 0.0706,
+      "alkaline_phosphotase": 0.144,
+      "alamine_aminotransferase": 0.1266,
+      "aspartate_aminotransferase": 0.1281,
+      "total_proteins": 0.0959,
+      "albumin": 0.101,
+      "albumin_and_globulin_ratio": 0.0817,
+      "gender": 0.0163
+    }
+  },
+  "stroke": {
+    "display_name": "Stroke",
+    "model_file": "stroke_model.pkl",
+    "dataset_records": 5110,
+    "feature_count": 10,
+    "feature_names": [
+      "age",
+      "hypertension",
+      "heart_disease",
+      "avg_glucose_level",
+      "bmi",
+      "gender",
+      "ever_married",
+      "work_type",
+      "Residence_type",
+      "smoking_status"
+    ],
+    "numeric_features": [
+      "age",
+      "hypertension",
+      "heart_disease",
+      "avg_glucose_level",
+      "bmi"
+    ],
+    "categorical_features": [
+      "gender",
+      "ever_married",
+      "work_type",
+      "Residence_type",
+      "smoking_status"
+    ],
+    "target_names": {
+      "0": "Lower Risk / No Stroke",
+      "1": "Higher Risk / Stroke Event"
+    },
+    "selected_algorithm": "XGBoost",
+    "best_f1_score": 0.9312,
+    "evaluation_comparison": [
+      {
+        "algorithm": "Random Forest",
+        "accuracy": 0.9481,
+        "precision": 0.9044,
+        "recall": 0.9481,
+        "f1_score": 0.9258
+      },
+      {
+        "algorithm": "XGBoost",
+        "accuracy": 0.9491,
+        "precision": 0.9253,
+        "recall": 0.9491,
+        "f1_score": 0.9312
+      },
+      {
+        "algorithm": "Decision Tree",
+        "accuracy": 0.9178,
+        "precision": 0.9193,
+        "recall": 0.9178,
+        "f1_score": 0.9186
+      },
+      {
+        "algorithm": "K-Nearest Neighbors",
+        "accuracy": 0.9452,
+        "precision": 0.9043,
+        "recall": 0.9452,
+        "f1_score": 0.9243
+      },
+      {
+        "algorithm": "Gradient Boosting",
+        "accuracy": 0.9462,
+        "precision": 0.9122,
+        "recall": 0.9462,
+        "f1_score": 0.9265
+      }
+    ],
+    "feature_importances": {
+      "age": 0.2027,
+      "hypertension": 0.1006,
+      "heart_disease": 0.0941,
+      "avg_glucose_level": 0.0862,
+      "bmi": 0.089,
+      "gender": 0.0822,
+      "ever_married": 0.1123,
+      "work_type": 0.0805,
+      "Residence_type": 0.0727,
+      "smoking_status": 0.0799
+    }
+  },
+  "lung_cancer": {
+    "display_name": "Lung Cancer",
+    "model_file": "lung_cancer_model.pkl",
+    "dataset_records": 309,
+    "feature_count": 15,
+    "feature_names": [
+      "AGE",
+      "GENDER",
+      "SMOKING",
+      "YELLOW_FINGERS",
+      "ANXIETY",
+      "PEER_PRESSURE",
+      "CHRONIC DISEASE",
+      "FATIGUE",
+      "ALLERGY",
+      "WHEEZING",
+      "ALCOHOL CONSUMING",
+      "COUGHING",
+      "SHORTNESS OF BREATH",
+      "SWALLOWING DIFFICULTY",
+      "CHEST PAIN"
+    ],
+    "numeric_features": [
+      "AGE"
+    ],
+    "categorical_features": [
+      "GENDER",
+      "SMOKING",
+      "YELLOW_FINGERS",
+      "ANXIETY",
+      "PEER_PRESSURE",
+      "CHRONIC DISEASE",
+      "FATIGUE",
+      "ALLERGY",
+      "WHEEZING",
+      "ALCOHOL CONSUMING",
+      "COUGHING",
+      "SHORTNESS OF BREATH",
+      "SWALLOWING DIFFICULTY",
+      "CHEST PAIN"
+    ],
+    "target_names": {
+      "0": "Lower Risk / Negative",
+      "1": "Higher Risk / Positive"
+    },
+    "selected_algorithm": "Decision Tree",
+    "best_f1_score": 0.9385,
+    "evaluation_comparison": [
+      {
+        "algorithm": "Random Forest",
+        "accuracy": 0.9194,
+        "precision": 0.9241,
+        "recall": 0.9194,
+        "f1_score": 0.9213
+      },
+      {
+        "algorithm": "XGBoost",
+        "accuracy": 0.8871,
+        "precision": 0.8814,
+        "recall": 0.8871,
+        "f1_score": 0.8839
+      },
+      {
+        "algorithm": "Decision Tree",
+        "accuracy": 0.9355,
+        "precision": 0.9445,
+        "recall": 0.9355,
+        "f1_score": 0.9385
+      },
+      {
+        "algorithm": "K-Nearest Neighbors",
+        "accuracy": 0.8387,
+        "precision": 0.8207,
+        "recall": 0.8387,
+        "f1_score": 0.8287
+      },
+      {
+        "algorithm": "Gradient Boosting",
+        "accuracy": 0.8548,
+        "precision": 0.8626,
+        "recall": 0.8548,
+        "f1_score": 0.8584
+      }
+    ],
+    "feature_importances": {
+      "AGE": 0.212,
+      "GENDER": 0.0519,
+      "SMOKING": 0.0687,
+      "YELLOW_FINGERS": 0.0041,
+      "ANXIETY": 0.0502,
+      "PEER_PRESSURE": 0.1003,
+      "CHRONIC DISEASE": 0.0119,
+      "FATIGUE": 0.0664,
+      "ALLERGY": 0.1242,
+      "WHEEZING": 0.0184,
+      "ALCOHOL CONSUMING": 0.1244,
+      "COUGHING": 0.0,
+      "SHORTNESS OF BREATH": 0.0492,
+      "SWALLOWING DIFFICULTY": 0.1112,
+      "CHEST PAIN": 0.0072
+    }
+  }
+}

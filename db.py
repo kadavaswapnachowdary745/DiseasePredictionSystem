@@ -205,30 +205,140 @@ DISEASE_SEEDS = [
         'diet_recommendations': ['Mainly liquid or semi-liquid foods to start', 'Fresh coconut water and sugarcane juice', 'Boiled vegetables without oil', 'Ripe bananas and papayas', 'Avoid oily, fried, spicy, or heavy dairy items'],
         'lifestyle_changes': ['Get absolute bed rest and avoid physical exertion', 'Keep hydrated with safe, boiled drinking water', 'Strictly avoid alcohol or liver-taxing substances', 'Consult a doctor to treat the root cause of high bilirubin levels'],
         'recommended_doctor': 'Gastroenterologist / Hepatologist'
+    },
+    {
+        'name': 'Heart Disease',
+        'description': 'A broad term for conditions affecting the heart structure and blood vessels, including coronary artery disease, heart failure, and arrhythmias.',
+        'causes': ['High blood pressure (hypertension)', 'Elevated LDL cholesterol', 'Smoking and tobacco use', 'Sedentary lifestyle and obesity', 'Diabetes and genetic factors'],
+        'symptoms': ['chest_pain', 'shortness_of_breath', 'dizziness', 'fatigue', 'irregular_heartbeat', 'swelling_in_legs'],
+        'precautions': ['Adopt a heart-healthy low-sodium, low-fat diet', 'Engage in 150 minutes of moderate exercise per week', 'Avoid smoking and limit alcohol intake', 'Monitor blood pressure and cholesterol levels regularly'],
+        'diet_recommendations': ['DASH and Mediterranean diet patterns', 'Omega-3 fatty acid rich foods (salmon, flaxseeds, walnuts)', 'Whole grains (oats, brown rice)', 'Fresh fruits and leafy green vegetables', 'Limit saturated fats, trans fats, and processed sodium'],
+        'lifestyle_changes': ['Maintain 30 minutes of daily physical exercise', 'Practice stress management techniques like meditation', 'Maintain a healthy Body Mass Index (BMI)', 'Schedule regular cardiovascular checkups'],
+        'recommended_doctor': 'Cardiologist'
+    },
+    {
+        'name': 'Chronic Kidney Disease',
+        'description': 'A gradual loss of kidney function over time, impairing the body\'s ability to filter waste products and excess fluids from the blood.',
+        'causes': ['Uncontrolled High Blood Pressure (Hypertension)', 'Diabetes (Diabetic Nephropathy)', 'Glomerulonephritis', 'Long-term overuse of NSAID painkillers'],
+        'symptoms': ['fatigue', 'swelling_in_feet_or_ankles', 'frequent_urination', 'nausea', 'loss_of_appetite', 'shortness_of_breath'],
+        'precautions': ['Keep blood pressure and blood sugar strictly controlled', 'Limit daily sodium and protein intake as directed by a nephrologist', 'Stay adequately hydrated but follow fluid guidelines', 'Avoid unnecessary NSAID pain relievers'],
+        'diet_recommendations': ['Low-sodium and low-potassium foods', 'Controlled protein intake (lean poultry, egg whites)', 'Apples, berries, and cabbage', 'Avoid high-phosphorus processed foods and dark sodas'],
+        'lifestyle_changes': ['Monitor blood pressure daily', 'Avoid smoking and alcohol completely', 'Perform light physical exercise as tolerated', 'Get regular kidney function tests (serum creatinine, eGFR)'],
+        'recommended_doctor': 'Nephrologist'
+    },
+    {
+        'name': 'Breast Cancer',
+        'description': 'A disease in which malignant cells form in the tissues of the breast, most commonly starting in the ducts or lobules.',
+        'causes': ['Genetic mutations (BRCA1, BRCA2 genes)', 'Hormonal factors and advancing age', 'Family history of breast or ovarian cancer', 'Obesity and alcohol consumption'],
+        'symptoms': ['painless_breast_lump', 'skin_changes_or_dimpling', 'nipple_discharge_or_inversion', 'breast_pain_or_swelling', 'swollen_lymph_nodes'],
+        'precautions': ['Perform monthly self-breast examinations', 'Undergo regular mammogram screenings', 'Maintain a healthy weight and stay active', 'Limit alcohol consumption'],
+        'diet_recommendations': ['Antioxidant-rich berries and cruciferous vegetables (broccoli, kale)', 'Whole grains and legumes', 'Green tea and flaxseeds', 'Avoid processed meats and excessive saturated fats'],
+        'lifestyle_changes': ['Schedule routine clinical breast examinations', 'Engage in regular physical exercise', 'Maintain a healthy weight post-menopause', 'Discuss genetic risk factors with a specialist'],
+        'recommended_doctor': 'Oncologist / Breast Specialist'
+    },
+    {
+        'name': 'Liver Disease',
+        'description': 'Damage to liver tissue that impairs its ability to filter toxins, produce bile, and assist metabolic functions.',
+        'causes': ['Excessive alcohol consumption', 'Non-alcoholic fatty liver disease (NAFLD) linked to obesity/diabetes', 'Viral hepatitis (B, C)', 'Exposure to toxins or heavy drug use'],
+        'symptoms': ['yellowing_of_skin', 'yellowing_of_eyes', 'abdominal_pain_and_swelling', 'dark_urine', 'chronic_fatigue', 'nausea', 'loss_of_appetite'],
+        'precautions': ['Abstain completely from alcohol', 'Get vaccinated against Hepatitis A and B', 'Maintain a healthy body weight', 'Avoid self-medication and liver-toxic substances'],
+        'diet_recommendations': ['Low-fat, plant-based nutrient-dense foods', 'Whole grains (oats, quinoa)', 'Fresh green leafy vegetables', 'Coffee in moderation (protective for liver health)', 'Avoid fried, sugary, and processed foods'],
+        'lifestyle_changes': ['Maintain strict alcohol abstinence', 'Exercise regularly to reduce liver fat', 'Undergo regular liver enzyme tests (ALT, AST)', 'Maintain good personal sanitation'],
+        'recommended_doctor': 'Hepatologist / Gastroenterologist'
+    },
+    {
+        'name': 'Stroke',
+        'description': 'A medical emergency occurring when blood supply to a part of the brain is interrupted, depriving brain tissue of oxygen and nutrients.',
+        'causes': ['High blood pressure (Hypertension)', 'Smoking and elevated cholesterol', 'Diabetes and cardiovascular disease', 'Atrial fibrillation'],
+        'symptoms': ['sudden_numbness_or_weakness', 'facial_droop', 'arm_weakness', 'speech_difficulty', 'sudden_confusion', 'severe_headache', 'dizziness'],
+        'precautions': ['Strictly control high blood pressure', 'Stop smoking immediately', 'Manage blood sugar and cholesterol levels', 'Remember FAST: Face droop, Arm weakness, Speech difficulty, Time to call emergency'],
+        'diet_recommendations': ['Plant-focused DASH or Mediterranean diet', 'Potassium-rich foods (bananas, spinach, sweet potatoes)', 'Fiber-rich oats and legumes', 'Avoid high-sodium, fried, and trans-fat foods'],
+        'lifestyle_changes': ['Engage in daily aerobic exercise', 'Eliminate tobacco use', 'Limit alcohol intake', 'Take prescribed blood pressure or anticoagulant medications reliably'],
+        'recommended_doctor': 'Neurologist / Vascular Surgeon'
+    },
+    {
+        'name': 'Lung Cancer',
+        'description': 'A type of cancer that begins in the lungs, strongly linked to inhaled carcinogens, especially tobacco smoke.',
+        'causes': ['Tobacco smoking (primary or passive exposure)', 'Radon gas exposure', 'Occupational exposure to asbestos or chemicals', 'Air pollution and genetic factors'],
+        'symptoms': ['persistent_cough', 'coughing_up_blood', 'chest_pain', 'shortness_of_breath', 'hoarseness', 'unexplained_weight_loss', 'wheezing'],
+        'precautions': ['Avoid all forms of smoking and secondhand smoke', 'Test home environment for radon gas', 'Wear protective equipment if working with industrial hazards', 'Maintain an active lifestyle'],
+        'diet_recommendations': ['Antioxidant-rich fruits and vegetables (berries, carrots, apples)', 'Cruciferous vegetables (broccoli, cabbage)', 'Green tea', 'Avoid processed and high-fat foods'],
+        'lifestyle_changes': ['Seek smoking cessation support programs', 'Improve indoor ventilation and air quality', 'Get annual low-dose CT screening if high-risk long-term smoker', 'Perform light respiratory exercises'],
+        'recommended_doctor': 'Pulmonologist / Thoracic Oncologist'
     }
+]
+
+HEALTH_TIPS_SEEDS = [
+    # Nutrition general tips
+    {'category': 'Nutrition', 'tip': 'Eat a colorful plate. Try to include 3-5 different colored vegetables and fruits in your meals daily to get a variety of vitamins and antioxidants.', 'disease_context': None},
+    {'category': 'Nutrition', 'tip': 'Cut back on processed sugars. Opt for whole foods like raw nuts, fruits, and whole grains to keep energy levels stable throughout the day.', 'disease_context': None},
+    {'category': 'Nutrition', 'tip': 'Stay hydrated. Drink at least 8-10 glasses of water daily. Hydration is vital for healthy digestion, circulation, and skin.', 'disease_context': None},
+    {'category': 'Nutrition', 'tip': 'Include healthy fats in your diet, such as avocados, extra virgin olive oil, and walnuts. They support brain health and hormone regulation.', 'disease_context': None},
+    
+    # Exercise general tips
+    {'category': 'Exercise', 'tip': 'Aim for 150 minutes of moderate aerobic activity weekly. A simple 30-minute brisk walk, five days a week, dramatically improves heart health.', 'disease_context': None},
+    {'category': 'Exercise', 'tip': 'Incorporate strength training at least twice a week. Lifting weights or doing bodyweight exercises helps preserve bone density and muscle mass.', 'disease_context': None},
+    {'category': 'Exercise', 'tip': 'Avoid prolonged sitting. Stand up, stretch, or walk around for 2 minutes every hour to improve blood circulation and reduce spinal pressure.', 'disease_context': None},
+    {'category': 'Exercise', 'tip': 'Listen to your body. Warm up before exercising and cool down afterward to prevent muscle strains and injury.', 'disease_context': None},
+    
+    # Sleep general tips
+    {'category': 'Sleep', 'tip': 'Aim for 7-9 hours of quality sleep per night. Sleep is essential for muscle recovery, brain health, and keeping your immune system strong.', 'disease_context': None},
+    {'category': 'Sleep', 'tip': 'Set a consistent sleep schedule. Go to bed and wake up at the same time every day, even on weekends, to regulate your circadian rhythm.', 'disease_context': None},
+    {'category': 'Sleep', 'tip': 'Disconnect from screens 30-60 minutes before bed. Blue light from smartphones and laptops inhibits melatonin production, making it harder to fall asleep.', 'disease_context': None},
+    {'category': 'Sleep', 'tip': 'Keep your bedroom cool, dark, and quiet. A sleep-friendly environment signals your brain that it is time to wind down.', 'disease_context': None},
+    
+    # Disease Prevention general tips
+    {'category': 'Disease Prevention', 'tip': 'Wash your hands frequently with soap and water for at least 20 seconds to prevent the spread of infectious viruses and bacteria.', 'disease_context': None},
+    {'category': 'Disease Prevention', 'tip': 'Get scheduled health checkups. Early detection of blood pressure, cholesterol, or glucose anomalies is key to preventing long-term illness.', 'disease_context': None},
+    {'category': 'Disease Prevention', 'tip': 'Prioritize stress management. Chronic stress raises cortisol levels, weakening the immune response. Try deep breathing or meditation.', 'disease_context': None},
+    {'category': 'Disease Prevention', 'tip': 'Stay up-to-date with vaccinations. Vaccines are safe and provide the strongest protection against influenza, pneumonia, and other infections.', 'disease_context': None},
+
+    # Disease-specific tips
+    {'category': 'Disease Prevention', 'tip': 'For Influenza: Get your annual flu shot and isolate if symptoms develop. Drink warm broths to thin mucus.', 'disease_context': 'Influenza (Flu)'},
+    {'category': 'Disease Prevention', 'tip': 'For Common Cold: Gargle with warm salt water to relieve sore throat. Rest is your body\'s best way to fight rhinoviruses.', 'disease_context': 'Common Cold'},
+    {'category': 'Disease Prevention', 'tip': 'For Covid-19: Monitor oxygen levels with a pulse oximeter. Isolate in a well-ventilated space to protect family members.', 'disease_context': 'Covid-19'},
+    {'category': 'Nutrition', 'tip': 'For Diabetes: Focus on fiber-rich, low-glycemic foods. Monitor blood sugar levels before and after meals.', 'disease_context': 'Diabetes'},
+    {'category': 'Nutrition', 'tip': 'For Hypertension: Reduce sodium intake strictly to under 1,500 mg daily and adopt the low-fat DASH diet.', 'disease_context': 'Hypertension'},
+    {'category': 'Disease Prevention', 'tip': 'For Asthma: Always keep a rescue inhaler in an accessible spot. Avoid strong scents, dust, and pollen triggers.', 'disease_context': 'Asthma'},
+    {'category': 'Sleep', 'tip': 'For Migraine: Maintain a rigorous sleeping pattern. Sleep deprivation is one of the most common migraine triggers.', 'disease_context': 'Migraine'},
+    {'category': 'Disease Prevention', 'tip': 'For Malaria: Sleep under insecticidal bed nets and drain stagnant water around your home. Seek immediate medical attention.', 'disease_context': 'Malaria'},
+    {'category': 'Disease Prevention', 'tip': 'For Dengue: Stay hydrated with electrolyte fluids. Do not take NSAIDs like Aspirin or Ibuprofen, as they increase bleeding risks.', 'disease_context': 'Dengue'},
+    {'category': 'Nutrition', 'tip': 'For Typhoid: Drink only boiled or bottled mineral water. Consume light, easily digestible soft foods.', 'disease_context': 'Typhoid'},
+    {'category': 'Disease Prevention', 'tip': 'For Chickenpox: Take cool oatmeal baths to relieve skin itching and wear mittens to avoid scratching and scarring.', 'disease_context': 'Chickenpox'},
+    {'category': 'Disease Prevention', 'tip': 'For Tuberculosis: Complete the full duration of your DOTS antibiotic course, even if you feel better. Good room ventilation is key.', 'disease_context': 'Tuberculosis'},
+    {'category': 'Exercise', 'tip': 'For Pneumonia: Rest in an inclined position to make breathing easier. Avoid physical exertion until clear.', 'disease_context': 'Pneumonia'},
+    {'category': 'Nutrition', 'tip': 'For Gastroenteritis: Sip Oral Rehydration Salts (ORS) slowly. Follow the BRAT diet (Bananas, Rice, Applesauce, Toast).', 'disease_context': 'Gastroenteritis'},
+    {'category': 'Nutrition', 'tip': 'For UTI: Drink plenty of water and unsweetened cranberry juice to help flush bacteria out of the urinary tract.', 'disease_context': 'UTI'},
+    {'category': 'Disease Prevention', 'tip': 'For Allergy: Wash your clothes and shower after spending time outdoors during high pollen seasons to remove allergens.', 'disease_context': 'Allergy'},
+    {'category': 'Nutrition', 'tip': 'For GERD: Avoid lying down for 2-3 hours after eating, and avoid triggers like caffeine, chocolate, and fatty foods.', 'disease_context': 'GERD (Acid Reflux)'},
+    {'category': 'Exercise', 'tip': 'For Arthritis: Keep joints moving with low-impact aerobic exercises like swimming, which eases joint stiffness without high pressure.', 'disease_context': 'Arthritis'},
+    {'category': 'Nutrition', 'tip': 'For Hepatitis: Rest fully and avoid alcohol entirely. Eat a low-fat, high-carbohydrate diet to reduce liver strain.', 'disease_context': 'Hepatitis'},
+    {'category': 'Nutrition', 'tip': 'For Jaundice: Rest completely and drink fresh sugarcane or coconut water. Avoid fried, heavy, or fatty dairy products.', 'disease_context': 'Jaundice'}
 ]
 
 def get_db_connection():
     """
-    Establish database connection. If running in a Flask request context,
+    Establish a database connection. If running in a Flask request context,
     reuse the connection stored in Flask's 'g' object. Otherwise, return a new connection.
     """
     try:
-        if current_app:
+        if has_app_context():
             if 'db' not in g:
-                g.db = sqlite3.connect(
-                    current_app.config['DATABASE_PATH']
-                )
-                g.db.row_factory = sqlite3.Row
-                g.db.execute("PRAGMA foreign_keys = ON;")
+                conn = sqlite3.connect(current_app.config['DATABASE_PATH'], timeout=30.0, isolation_level=None)
+                conn.row_factory = sqlite3.Row
+                conn.execute("PRAGMA foreign_keys = ON;")
+                conn.execute("PRAGMA busy_timeout = 30000;")
+                g.db = conn
             return g.db
-    except RuntimeError:
+    except Exception:
         pass
-        
-    conn = sqlite3.connect(Config.DATABASE_PATH)
+
+    conn = sqlite3.connect(Config.DATABASE_PATH, timeout=30.0, isolation_level=None)
     conn.row_factory = sqlite3.Row
     conn.execute("PRAGMA foreign_keys = ON;")
+    conn.execute("PRAGMA busy_timeout = 30000;")
     return conn
+
 
 def close_db(e=None):
     """Close the database connection for the current Flask request context."""
@@ -236,15 +346,15 @@ def close_db(e=None):
     if db is not None:
         db.close()
 
+
 def seed_disease_data(db):
-    """Programmatically populates the disease_info table if it is currently empty."""
+    """Programmatically populates the disease_info table with missing seeds."""
     cursor = db.cursor()
-    cursor.execute("SELECT COUNT(*) FROM disease_info")
-    count = cursor.fetchone()[0]
-    
-    if count == 0:
-        print("Seeding database with clinical disease data...")
-        for disease in DISEASE_SEEDS:
+    inserted_count = 0
+    for disease in DISEASE_SEEDS:
+        cursor.execute("SELECT COUNT(*) FROM disease_info WHERE name = ?", (disease['name'],))
+        exists = cursor.fetchone()[0]
+        if not exists:
             cursor.execute(
                 "INSERT INTO disease_info (name, description, causes, symptoms, precautions, diet_recommendations, lifestyle_changes, recommended_doctor) "
                 "VALUES (?, ?, ?, ?, ?, ?, ?, ?)",
@@ -259,41 +369,56 @@ def seed_disease_data(db):
                     disease['recommended_doctor']
                 )
             )
-        db.commit()
-        print(f"Seeded {len(DISEASE_SEEDS)} diseases successfully.")
-    else:
-        print(f"Database already contains {count} disease profiles. Seeding skipped.")
+            inserted_count += 1
+    db.commit()
+    if inserted_count > 0:
+        print(f"Seeded {inserted_count} new disease profiles into database.")
+
+
 
 def init_db():
-    """Initialize database tables using schema.sql DDL script and seed data."""
-    # Check if we need to drop the old database to recreate with new schema
+    """Ensure the SQLite database exists and initialize its schema without deleting existing data."""
     db_path = Config.DATABASE_PATH
-    if os.path.exists(db_path):
-        try:
-            conn = sqlite3.connect(db_path)
-            cursor = conn.cursor()
-            cursor.execute("PRAGMA table_info(disease_info);")
-            columns = [col[1] for col in cursor.fetchall()]
-            conn.close()
-            if columns and 'diet_recommendations' not in columns:
-                print("Old database schema detected. Deleting old database to apply updates...")
-                os.remove(db_path)
-        except Exception as e:
-            print(f"Error checking database schema: {e}")
+    os.makedirs(os.path.dirname(db_path), exist_ok=True)
 
-    db = get_db_connection()
-    schema_path = os.path.join(os.path.abspath(os.path.dirname(__file__)), 'schema.sql')
-    
-    with open(schema_path, 'r') as f:
-        db.executescript(f.read())
-        
-    db.commit()
-    
-    # Call the seed function
-    seed_disease_data(db)
-    
-    db.close()
-    print("Database initialization and seeding completed.")
+    conn = sqlite3.connect(db_path, timeout=30.0)
+    conn.row_factory = sqlite3.Row
+    conn.execute("PRAGMA foreign_keys = ON;")
+    conn.execute("PRAGMA journal_mode = WAL;")
+    conn.execute("PRAGMA busy_timeout = 30000;")
+
+    try:
+        # Check if database is already initialized
+        cur = conn.cursor()
+        cur.execute("SELECT name FROM sqlite_master WHERE type='table' AND name='disease_info';")
+        tbl = cur.fetchone()
+        if tbl:
+            # Check if prediction_type column exists, add if missing
+            cur.execute("PRAGMA table_info(predictions);")
+            cols = [r[1] for r in cur.fetchall()]
+            if 'prediction_type' not in cols:
+                cur.execute("ALTER TABLE predictions ADD COLUMN prediction_type TEXT DEFAULT 'General';")
+            conn.commit()
+            cur.close()
+            seed_disease_data(conn)
+            return
+        cur.close()
+
+        schema_path = os.path.join(os.path.abspath(os.path.dirname(__file__)), 'schema.sql')
+        with open(schema_path, 'r', encoding='utf-8') as f:
+            conn.executescript(f.read())
+        conn.commit()
+        seed_disease_data(conn)
+        conn.commit()
+        print("Database initialization and seeding completed.")
+    except sqlite3.DatabaseError as exc:
+        conn.rollback()
+        print(f"Database initialization failed: {exc}")
+        raise
+    finally:
+        conn.close()
+
+from flask import g, current_app, has_app_context
 
 def query_db(query, args=(), one=False):
     """Helper function to query the database."""
@@ -303,11 +428,9 @@ def query_db(query, args=(), one=False):
     rv = cur.fetchall()
     cur.close()
     
-    try:
-        if not current_app:
-            conn.commit()
-            conn.close()
-    except RuntimeError:
+    if has_app_context() and 'db' in g and g.db == conn:
+        pass
+    else:
         conn.commit()
         conn.close()
         
@@ -321,13 +444,9 @@ def insert_db(query, args=()):
     last_id = cur.lastrowid
     cur.close()
     
-    try:
-        if current_app:
-            conn.commit()
-        else:
-            conn.commit()
-            conn.close()
-    except RuntimeError:
+    if has_app_context() and 'db' in g and g.db == conn:
+        conn.commit()
+    else:
         conn.commit()
         conn.close()
         

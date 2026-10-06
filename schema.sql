@@ -14,9 +14,10 @@ CREATE TABLE IF NOT EXISTS users (
 CREATE TABLE IF NOT EXISTS predictions (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     user_id INTEGER NOT NULL,
-    symptoms TEXT NOT NULL,          -- JSON serialized list of symptoms
+    symptoms TEXT NOT NULL,          -- JSON serialized list of symptoms or input summary dict
     predicted_disease TEXT NOT NULL,
     confidence REAL NOT NULL,
+    prediction_type TEXT DEFAULT 'General', -- 'General' or 'Specialized'
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE CASCADE
 );
@@ -42,6 +43,14 @@ CREATE TABLE IF NOT EXISTS chat_history (
     message TEXT NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE CASCADE
+);
+
+-- Health Tips Table
+CREATE TABLE IF NOT EXISTS health_tips (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    category TEXT NOT NULL,          -- 'Nutrition', 'Exercise', 'Sleep', 'Disease Prevention'
+    tip TEXT NOT NULL,
+    disease_context TEXT             -- Optional link to a disease name (e.g. 'Diabetes', 'Covid-19')
 );
 
 
